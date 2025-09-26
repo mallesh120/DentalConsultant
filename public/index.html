@@ -6,6 +6,8 @@
     <title>Dental Patient Education AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- DOMPurify for safe HTML rendering of model responses -->
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -328,7 +330,23 @@
         function displayResult(result, targetDiv, citationsConfig) {
             const candidate = result.candidates?.[0];
             if (candidate && candidate.content?.parts?.[0]?.text) {
-                targetDiv.innerText = candidate.content.parts[0].text;
+                const raw = candidate.content.parts[0].text || '';
+
+                // Detect if the response looks like HTML (simple heuristic)
+                const looksLikeHtml = /<[^>]+>/.test(raw);
+
+                if (looksLikeHtml && window.DOMPurify) {
+                    // Only allow a conservative set of tags and attributes
+                    const clean = DOMPurify.sanitize(raw, {
+                        ALLOWED_TAGS: ['p','strong','em','ol','ul','li','h3','br','a','blockquote'],
+                        ALLOWED_ATTR: ['href', 'target', 'rel']
+                    });
+                    targetDiv.innerHTML = clean;
+                } else {
+                    // Fallback: render as plain text (escaped)
+                    targetDiv.innerText = raw;
+                }
+
                 targetDiv.style.display = 'block';
 
                 if (citationsConfig) {
