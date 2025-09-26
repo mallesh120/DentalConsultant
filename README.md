@@ -36,13 +36,21 @@ Install Dependencies: Open a terminal or command prompt, navigate to your projec
 
 npm install
 
-Create .env File:
+Create .env File (local development):
 
-Rename the .env.example file to .env.
+Rename the `.env.example` file to `.env` and paste your Google AI API key into it for local testing. Do NOT commit `.env` to version control.
 
-Open the new .env file and paste your Google AI API key into it:
+Example (`.env`):
 
 GOOGLE_API_KEY="AIzaSy...your...long...api...key...here"
+
+Production on Netlify:
+
+1. Go to your Netlify site dashboard.
+2. Site settings -> Build & deploy -> Environment -> Environment variables.
+3. Add the key `GOOGLE_API_KEY` with your secret value.
+
+Netlify will inject this into serverless functions at runtime. This keeps your API key out of the repo.
 
 3. Start the Server
 In your terminal, run the command: node server.js

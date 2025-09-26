@@ -1,0 +1,18 @@
+# netlify.toml
+# This file tells Netlify how to build and deploy your site.
+
+[build]
+  # The directory with your static files (index.html) to be deployed.
+  publish = "public"
+  
+  # The directory where Netlify will find the serverless functions.
+  functions = "netlify/functions"
+
+# This redirect rule makes your frontend code simpler.
+# It forwards any request from "/api/..." to your serverless function.
+# This way, your index.html can use the same "/api/generate" path for both
+# local development (server.js) and the live Netlify deployment.
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
