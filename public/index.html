@@ -97,6 +97,12 @@
                 <div id="loader" class="flex justify-center items-center h-40">
                     <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
                 </div>
+                <div class="mt-4 text-center">
+                    <button id="generateImageBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg transition">✨ Create a Simple Diagram</button>
+                </div>
+                <div id="imageContainer" class="mt-4 flex justify-center items-center" style="display:none;">
+                    <img id="generatedImage" src="" alt="Generated diagram" class="max-w-full rounded-lg border" />
+                </div>
                 <div id="output" class="prose max-w-none p-5 bg-gray-50 rounded-lg border border-gray-200 whitespace-pre-wrap"></div>
                 <div id="citations" class="mt-6" style="display: none;">
                     <h3 class="text-md font-semibold text-gray-600 mb-2">Sources:</h3>
@@ -254,6 +260,11 @@
         let currentProcedure = '';
         let currentPatientProfile = '';
 
+    // Image UI
+    const generateImageBtn = document.getElementById('generateImageBtn');
+    const imageContainer = document.getElementById('imageContainer');
+    const generatedImage = document.getElementById('generatedImage');
+
         // Event Listeners
         generateBtn.addEventListener('click', generateExplanation);
         procedureInput.addEventListener('keyup', e => e.key === 'Enter' && generateBtn.click());
@@ -265,6 +276,7 @@
         translateBtn.addEventListener('click', translateText);
         modalCloseBtn.addEventListener('click', hideModal);
         modalOverlay.addEventListener('click', hideModal);
+    generateImageBtn.addEventListener('click', createSimpleDiagram);
 
         function copyOutputText() {
             const textToCopy = outputDiv.innerText;
@@ -562,6 +574,44 @@
                 translateOutput.innerText = `An error occurred: ${error.message}`;
             } finally {
                 setLoadingState(translateLoader, translateBtn, false);
+            }
+        }
+
+        async function createSimpleDiagram() {
+            // Use currentProcedure if available otherwise prompt for a procedure
+            const subject = currentProcedure || procedureInput.value.trim() || 'dental crown placement';
+            const prompt = `Create a very simple, clear, cartoon-style diagram explaining how a ${subject} is done for a patient. Use simple shapes, label the important parts (tooth, crown, gum), and avoid detailed anatomy. Keep colors limited and the style friendly and child-appropriate.`;
+
+            generateImageBtn.disabled = true;
+            generateImageBtn.classList.add('opacity-50');
+
+            try {
+                const resp = await fetch('/.netlify/functions/generate-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt })
+                });
+                if (!resp.ok) {
+                    const err = await resp.json().catch(()=>({}));
+                    throw new Error(err.error || 'Image API error');
+                }
+                const data = await resp.json();
+                // Expect either image_url or b64_json
+                if (data.image_url) {
+                    generatedImage.src = data.image_url;
+                    imageContainer.style.display = 'block';
+                } else if (data.b64_json) {
+                    generatedImage.src = 'data:image/png;base64,' + data.b64_json;
+                    imageContainer.style.display = 'block';
+                } else {
+                    throw new Error('No image returned');
+                }
+            } catch (error) {
+                console.error('Image generation error:', error);
+                showModal('Image generation failed', error.message || 'Unknown error');
+            } finally {
+                generateImageBtn.disabled = false;
+                generateImageBtn.classList.remove('opacity-50');
             }
         }
     </script>

@@ -52,6 +52,15 @@ Production on Netlify:
 
 Netlify will inject this into serverless functions at runtime. This keeps your API key out of the repo.
 
+Image generation (optional)
+
+If you enable the "Create a Simple Diagram" feature, your image-generation provider will also need an API key. Set these environment variables in Netlify:
+
+- IMAGE_API_KEY: your image provider API key
+- IMAGE_API_URL: (optional) the image API endpoint; default expected by the function is https://api.example-image.com/v1/generate
+
+The `netlify/functions/generate-image.js` function expects these env vars and will proxy image-generation requests.
+
 3. Start the Server
 In your terminal, run the command: node server.js
 
