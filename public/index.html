@@ -701,31 +701,35 @@
 
             generateImageBtn.disabled = true;
             generateImageBtn.classList.add('opacity-50');
+            imageContainer.style.display = 'none'; // Hide previous image
 
             try {
-                const resp = await fetch('/.netlify/functions/generate-image', {
+                // Use the /api/ redirect which is correctly configured in netlify.toml
+                const resp = await fetch('/api/generate-image', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt })
                 });
+
                 if (!resp.ok) {
-                    const err = await resp.json().catch(()=>({}));
-                    throw new Error(err.error || 'Image API error');
+                    const err = await resp.json().catch(() => ({}));
+                    const errorMsg = err.error || err.msg || `API returned status ${resp.status}`;
+                    throw new Error(errorMsg);
                 }
+
                 const data = await resp.json();
-                // Expect either image_url or b64_json
-                if (data.image_url) {
-                    generatedImage.src = data.image_url;
-                    imageContainer.style.display = 'block';
-                } else if (data.b64_json) {
-                    generatedImage.src = 'data:image/png;base64,' + data.b64_json;
-                    imageContainer.style.display = 'block';
+
+                // The backend function returns { imageUrl: "data:image/png;base64,..." }
+                if (data.imageUrl) {
+                    generatedImage.src = data.imageUrl;
+                    imageContainer.style.display = 'flex'; // Use flex to be consistent with other styles
                 } else {
-                    throw new Error('No image returned');
+                    throw new Error('No image data found in the API response.');
                 }
+
             } catch (error) {
                 console.error('Image generation error:', error);
-                showModal('Image generation failed', error.message || 'Unknown error');
+                showModal('Image Generation Failed', error.message || 'An unknown error occurred.');
             } finally {
                 generateImageBtn.disabled = false;
                 generateImageBtn.classList.remove('opacity-50');
