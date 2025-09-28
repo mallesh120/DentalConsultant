@@ -35,19 +35,6 @@
         .modal-panel {
             transition: transform 0.2s ease-in-out;
         }
-        /* Tab Styles */
-        .tab-btn {
-            @apply whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm;
-        }
-        .tab-btn-active {
-            @apply text-cyan-600 border-cyan-500;
-        }
-        .tab-btn-inactive {
-            @apply text-gray-500 hover:text-gray-700 hover:border-gray-300 border-transparent;
-        }
-        .tab-panel {
-            @apply p-4;
-        }
     </style>
 </head>
 <body class="bg-gray-50 flex items-center justify-center min-h-screen py-8">
@@ -124,101 +111,74 @@
             </div>
             
             <!-- Gemini-Powered Follow-up Features -->
-            <div id="followUpContainer" class="p-6 md:p-8 border-t border-gray-200" style="display: none;">
-                <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">What's Next?</h2>
+            <div id="followUpContainer" class="p-6 md:p-8 border-t border-gray-200 space-y-8" style="display: none;">
+                <h2 class="text-2xl font-bold text-gray-800 text-center">What's Next?</h2>
                 
-                <!-- Tab Navigation -->
-                <div class="border-b border-gray-200">
-                    <nav class="-mb-px flex space-x-6 justify-center" aria-label="Tabs">
-                        <button id="tab-btn-support" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-cyan-600 border-cyan-500" aria-current="page">
-                            Follow-up & Support
-                        </button>
-                        <button id="tab-btn-cost" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 border-transparent">
-                            Cost Estimator
-                        </button>
-                    </nav>
-                </div>
-
-                <!-- Tab Content Panels -->
-                <div class="mt-6">
-                    <!-- Panel 1: Follow-up & Support -->
-                    <div id="tab-panel-support" class="tab-panel">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Column 1: Aftercare & Follow-up -->
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-semibold text-gray-700">Patient Follow-up</h3>
-                                <!-- Aftercare -->
-                                <div class="bg-white p-4 rounded-lg border">
-                                    <button id="aftercareBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm">
-                                        ✨ Generate Aftercare Tips
-                                    </button>
-                                    <div id="aftercareLoader" class="items-center mt-4 hidden"><div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div><span>Generating...</span></div>
-                                    <div id="aftercareOutput" class="mt-4 prose max-w-none p-3 bg-gray-50 rounded-lg border" style="display: none;"></div>
-                                </div>
-                                <!-- Follow-up Question -->
-                                <div class="bg-white p-4 rounded-lg border">
-                                    <div class="flex gap-2">
-                                        <input type="text" id="followUpInput" class="flex-grow px-4 py-2 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-cyan-500" placeholder="Ask a follow-up question...">
-                                        <button id="followUpBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm">
-                                            ✨ Ask
-                                        </button>
-                                    </div>
-                                    <div id="followUpLoader" class="items-center mt-4 hidden"><div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div><span>Answering...</span></div>
-                                    <div id="followUpOutput" class="mt-4 prose max-w-none p-3 bg-gray-50 rounded-lg border" style="display: none;"></div>
-                                </div>
+                <!-- Section 1: Core Follow-ups -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Aftercare Tips -->
+                    <div>
+                         <h3 class="text-lg font-semibold text-gray-700 mb-3 text-center">Patient Follow-up</h3>
+                        <div class="bg-white p-4 rounded-lg border">
+                            <button id="aftercareBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm mb-3">
+                                ✨ Generate Aftercare Tips
+                            </button>
+                             <div id="aftercareLoader" class="items-center mt-4 hidden">
+                                <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div>
+                                <span>Generating tips...</span>
                             </div>
-                            <!-- Column 2: Support & Translation -->
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-semibold text-gray-700">Patient Support</h3>
-                                <!-- Anxiety Tips -->
-                                <div class="bg-white p-4 rounded-lg border">
-                                    <button id="anxietyBtn" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm">
-                                        ✨ Help with Dental Anxiety
+                            <div id="aftercareOutput" class="mt-4 prose max-w-none p-4 bg-gray-50 rounded-lg border border-gray-200" style="display: none;"></div>
+
+                            <div class="mt-4">
+                                <div class="flex gap-2">
+                                    <input type="text" id="followUpInput" class="flex-grow px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition" placeholder="Ask a follow-up question...">
+                                    <button id="followUpBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm">
+                                        ✨ Ask
                                     </button>
-                                    <div id="anxietyLoader" class="items-center mt-4 hidden"><div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div><span>Finding tips...</span></div>
-                                    <div id="anxietyOutput" class="mt-4 prose max-w-none p-3 bg-gray-50 rounded-lg border" style="display: none;"></div>
                                 </div>
-                                <!-- Translation -->
-                                <div class="bg-white p-4 rounded-lg border">
-                                    <div class="flex gap-2">
-                                        <select id="languageSelect" class="flex-grow px-4 py-2 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-cyan-500">
-                                            <option value="Spanish">Spanish</option>
-                                            <option value="French">French</option>
-                                            <option value="Mandarin Chinese">Mandarin Chinese</option>
-                                            <option value="Vietnamese">Vietnamese</option>
-                                            <option value="Tagalog">Tagalog</option>
-                                        </select>
-                                        <button id="translateBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm">
-                                            ✨ Translate
-                                        </button>
-                                    </div>
-                                    <div id="translateLoader" class="items-center mt-4 hidden"><div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div><span>Translating...</span></div>
-                                    <div id="translateOutput" class="mt-4 prose max-w-none p-3 bg-gray-50 rounded-lg border" style="display: none;"></div>
+                                <div id="followUpLoader" class="items-center mt-4 hidden">
+                                    <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div>
+                                    <span>Getting an answer...</span>
                                 </div>
+                                <div id="followUpOutput" class="mt-4 prose max-w-none p-4 bg-gray-50 rounded-lg border border-gray-200" style="display: none;"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Panel 2: Cost Estimator -->
-                    <div id="tab-panel-cost" class="tab-panel hidden">
-                        <h3 class="text-lg font-semibold text-gray-700 mb-4 text-center">Procedure Cost Estimator</h3>
-                        <div class="max-w-md mx-auto bg-white p-4 rounded-lg border">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="procedureCost" class="block text-sm font-medium text-gray-700">Total Procedure Cost ($)</label>
-                                    <input type="number" id="procedureCost" class="w-full mt-1 px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500" placeholder="e.g., 1200">
-                                </div>
-                                <div>
-                                    <label for="insuranceCoverage" class="block text-sm font-medium text-gray-700">Insurance Coverage (%)</label>
-                                    <input type="number" id="insuranceCoverage" class="w-full mt-1 px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500" placeholder="e.g., 80">
-                                </div>
+                    <!-- Section 2: Patient Support -->
+                    <div>
+                         <h3 class="text-lg font-semibold text-gray-700 mb-3 text-center">Patient Support</h3>
+                        <div class="bg-white p-4 rounded-lg border">
+                             <!-- Anxiety Tips -->
+                            <button id="anxietyBtn" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm mb-3">
+                                ✨ Help with Dental Anxiety
+                            </button>
+                            <div id="anxietyLoader" class="items-center mt-4 hidden">
+                                <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div>
+                                <span>Finding calming tips...</span>
                             </div>
-                            <div class="mt-4 text-center">
-                                <button id="calculateCostBtn" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-6 rounded-lg transition shadow-sm">
-                                    ✨ Calculate Estimate
-                                </button>
-                            </div>
-                            <div id="costOutput" class="mt-4 prose max-w-none p-4 bg-gray-50 rounded-lg border" style="display: none;"></div>
+                            <div id="anxietyOutput" class="mt-4 prose max-w-none p-4 bg-gray-50 rounded-lg border border-gray-200" style="display: none;"></div>
+
+                             <!-- Language Translation -->
+                             <div class="mt-4">
+                                <div class="flex gap-2">
+                                    <select id="languageSelect" class="flex-grow px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                        <option value="Spanish">Spanish</option>
+                                        <option value="French">French</option>
+                                        <option value="Mandarin Chinese">Mandarin Chinese</option>
+                                        <option value="Vietnamese">Vietnamese</option>
+                                        <option value="Tagalog">Tagalog</option>
+                                    </select>
+                                    <button id="translateBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm">
+                                        ✨ Translate
+                                    </button>
+                                </div>
+                                <div id="translateLoader" class="items-center mt-4 hidden">
+                                    <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div>
+                                    <span>Translating...</span>
+                                </div>
+                                <div id="translateOutput" class="mt-4 prose max-w-none p-4 bg-gray-50 rounded-lg border border-gray-200" style="display: none;"></div>
+                             </div>
                         </div>
                     </div>
                 </div>
@@ -296,18 +256,6 @@
         const modalPanel = document.getElementById('modalPanel');
         const modalCloseBtn = document.getElementById('modalCloseBtn');
 
-        // Tab UI Elements
-        const tabBtnSupport = document.getElementById('tab-btn-support');
-        const tabBtnCost = document.getElementById('tab-btn-cost');
-        const tabPanelSupport = document.getElementById('tab-panel-support');
-        const tabPanelCost = document.getElementById('tab-panel-cost');
-
-        // Cost Estimator DOM Elements
-        const procedureCostInput = document.getElementById('procedureCost');
-        const insuranceCoverageInput = document.getElementById('insuranceCoverage');
-        const calculateCostBtn = document.getElementById('calculateCostBtn');
-        const costOutputDiv = document.getElementById('costOutput');
-
         // State
         let currentProcedure = '';
         let currentPatientProfile = '';
@@ -328,62 +276,7 @@
         translateBtn.addEventListener('click', translateText);
         modalCloseBtn.addEventListener('click', hideModal);
         modalOverlay.addEventListener('click', hideModal);
-        calculateCostBtn.addEventListener('click', calculateCost);
-        tabBtnSupport.addEventListener('click', () => switchTab('support'));
-        tabBtnCost.addEventListener('click', () => switchTab('cost'));
     generateImageBtn.addEventListener('click', createSimpleDiagram);
-
-        function switchTab(target) {
-            const isSupport = target === 'support';
-
-            // Toggle panel visibility
-            tabPanelSupport.classList.toggle('hidden', !isSupport);
-            tabPanelCost.classList.toggle('hidden', isSupport);
-
-            // Toggle button styles
-            tabBtnSupport.classList.toggle('tab-btn-active', isSupport);
-            tabBtnSupport.classList.toggle('tab-btn-inactive', !isSupport);
-            tabBtnCost.classList.toggle('tab-btn-active', !isSupport);
-            tabBtnCost.classList.toggle('tab-btn-inactive', isSupport);
-
-            // Update ARIA attribute
-            tabBtnSupport.setAttribute('aria-current', isSupport ? 'page' : 'false');
-            tabBtnCost.setAttribute('aria-current', !isSupport ? 'page' : 'false');
-        }
-
-        function calculateCost() {
-            const cost = parseFloat(procedureCostInput.value);
-            const coverage = parseFloat(insuranceCoverageInput.value);
-
-            costOutputDiv.style.display = 'none';
-            costOutputDiv.innerHTML = '';
-
-            if (isNaN(cost) || cost <= 0) {
-                costOutputDiv.innerHTML = '<p class="text-red-600">Please enter a valid total cost for the procedure.</p>';
-                costOutputDiv.style.display = 'block';
-                return;
-            }
-
-            if (isNaN(coverage) || coverage < 0 || coverage > 100) {
-                costOutputDiv.innerHTML = '<p class="text-red-600">Please enter a valid insurance coverage percentage (0-100).</p>';
-                costOutputDiv.style.display = 'block';
-                return;
-            }
-
-            const patientPays = cost - (cost * (coverage / 100));
-            const insurancePays = cost * (coverage / 100);
-
-            const resultHTML = `
-                <p><strong>Total Procedure Cost:</strong> $${cost.toFixed(2)}</p>
-                <p><strong>Insurance Coverage (${coverage}%):</strong> -$${insurancePays.toFixed(2)}</p>
-                <hr class="my-2">
-                <p class="font-bold"><strong>Estimated Patient Out-of-Pocket Cost:</strong> $${patientPays.toFixed(2)}</p>
-                <p class="text-sm text-gray-500 mt-2"><em>This is an estimate. Please confirm details with your insurance provider.</em></p>
-            `;
-
-            costOutputDiv.innerHTML = resultHTML;
-            costOutputDiv.style.display = 'block';
-        }
 
         function copyOutputText() {
             const textToCopy = outputDiv.innerText;
@@ -566,9 +459,8 @@
                 if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
                      followUpContainer.style.display = 'block';
                 }
-                // Clear previous follow-up results and reset tabs
-                clearFollowUpOutputs();
-                switchTab('support'); // Default to the support tab
+                // Clear previous follow-up results
+                [aftercareOutput, followUpOutput, anxietyOutput, translateOutput].forEach(el => el.style.display = 'none');
             } catch (error) {
                 console.error("Error:", error);
                 outputDiv.innerText = `An error occurred. Please try again.\n\n${error.message}`;
@@ -578,15 +470,6 @@
                 generateBtn.disabled = false;
                 generateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
-        }
-
-        function clearFollowUpOutputs() {
-            [aftercareOutput, followUpOutput, anxietyOutput, translateOutput, costOutputDiv].forEach(el => {
-                if (el) {
-                    el.style.display = 'none';
-                    el.innerHTML = '';
-                }
-            });
         }
         
         async function generateAftercare() {
@@ -697,7 +580,11 @@
         async function createSimpleDiagram() {
             // Use currentProcedure if available otherwise prompt for a procedure
             const subject = currentProcedure || procedureInput.value.trim() || 'dental crown placement';
-            const prompt = `Create a very simple, clear, cartoon-style diagram explaining how a ${subject} is done for a patient. Use simple shapes, label the important parts (tooth, crown, gum), and avoid detailed anatomy. Keep colors limited and the style friendly and child-appropriate.`;
+            const language = languageSelect.value || 'English'; // Default to English if nothing is selected
+            let prompt = `Create a very simple, clear, cartoon-style diagram explaining how a ${subject} is done for a patient. Use simple shapes, label the important parts (tooth, crown, gum), and avoid detailed anatomy. Keep colors limited and the style friendly and child-appropriate.`;
+
+            // Add a specific instruction for the language
+            prompt += ` IMPORTANT: All text and labels in the diagram must be written in ${language}.`;
 
             generateImageBtn.disabled = true;
             generateImageBtn.classList.add('opacity-50');
@@ -713,7 +600,7 @@
 
                 if (!resp.ok) {
                     const err = await resp.json().catch(() => ({}));
-                    const errorMsg = err.error || err.msg || `API returned status ${resp.status}`;
+                    const errorMsg = err.error || err.details || `API returned status ${resp.status}`;
                     throw new Error(errorMsg);
                 }
 
