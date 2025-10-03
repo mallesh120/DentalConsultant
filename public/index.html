@@ -8,47 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- DOMPurify for safe HTML rendering of model responses -->
     <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .loader {
-            border-top-color: #3498db;
-            -webkit-animation: spin 1s linear infinite;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .prose h3 {
-            margin-bottom: 0.5em;
-        }
-        .prose ul {
-            margin-top: 0;
-            padding-left: 1.25rem;
-        }
-        /* Modal Styles */
-        .modal-overlay {
-            transition: opacity 0.2s ease-in-out;
-        }
-        .modal-panel {
-            transition: transform 0.2s ease-in-out;
-        }
-        /* Tab Styles */
-        .tab-btn {
-            @apply whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm;
-        }
-        .tab-btn-active {
-            @apply text-cyan-600 border-cyan-500;
-        }
-        .tab-btn-inactive {
-            @apply text-gray-500 hover:text-gray-700 hover:border-gray-300 border-transparent;
-        }
-        .tab-panel {
-            @apply p-4;
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-gray-50 flex items-center justify-center min-h-screen py-8">
     <div class="w-full max-w-4xl mx-auto p-4 md:p-8">
@@ -124,101 +84,74 @@
             </div>
             
             <!-- Gemini-Powered Follow-up Features -->
-            <div id="followUpContainer" class="p-6 md:p-8 border-t border-gray-200" style="display: none;">
-                <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">What's Next?</h2>
+            <div id="followUpContainer" class="p-6 md:p-8 border-t border-gray-200 space-y-8" style="display: none;">
+                <h2 class="text-2xl font-bold text-gray-800 text-center">What's Next?</h2>
                 
-                <!-- Tab Navigation -->
-                <div class="border-b border-gray-200">
-                    <nav class="-mb-px flex space-x-6 justify-center" aria-label="Tabs">
-                        <button id="tab-btn-support" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-cyan-600 border-cyan-500" aria-current="page">
-                            Follow-up & Support
-                        </button>
-                        <button id="tab-btn-cost" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 border-transparent">
-                            Cost Estimator
-                        </button>
-                    </nav>
-                </div>
-
-                <!-- Tab Content Panels -->
-                <div class="mt-6">
-                    <!-- Panel 1: Follow-up & Support -->
-                    <div id="tab-panel-support" class="tab-panel">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Column 1: Aftercare & Follow-up -->
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-semibold text-gray-700">Patient Follow-up</h3>
-                                <!-- Aftercare -->
-                                <div class="bg-white p-4 rounded-lg border">
-                                    <button id="aftercareBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm">
-                                        ✨ Generate Aftercare Tips
-                                    </button>
-                                    <div id="aftercareLoader" class="items-center mt-4 hidden"><div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div><span>Generating...</span></div>
-                                    <div id="aftercareOutput" class="mt-4 prose max-w-none p-3 bg-gray-50 rounded-lg border" style="display: none;"></div>
-                                </div>
-                                <!-- Follow-up Question -->
-                                <div class="bg-white p-4 rounded-lg border">
-                                    <div class="flex gap-2">
-                                        <input type="text" id="followUpInput" class="flex-grow px-4 py-2 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-cyan-500" placeholder="Ask a follow-up question...">
-                                        <button id="followUpBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm">
-                                            ✨ Ask
-                                        </button>
-                                    </div>
-                                    <div id="followUpLoader" class="items-center mt-4 hidden"><div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div><span>Answering...</span></div>
-                                    <div id="followUpOutput" class="mt-4 prose max-w-none p-3 bg-gray-50 rounded-lg border" style="display: none;"></div>
-                                </div>
+                <!-- Section 1: Core Follow-ups -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Aftercare Tips -->
+                    <div>
+                         <h3 class="text-lg font-semibold text-gray-700 mb-3 text-center">Patient Follow-up</h3>
+                        <div class="bg-white p-4 rounded-lg border">
+                            <button id="aftercareBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm mb-3">
+                                ✨ Generate Aftercare Tips
+                            </button>
+                             <div id="aftercareLoader" class="items-center mt-4 hidden">
+                                <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div>
+                                <span>Generating tips...</span>
                             </div>
-                            <!-- Column 2: Support & Translation -->
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-semibold text-gray-700">Patient Support</h3>
-                                <!-- Anxiety Tips -->
-                                <div class="bg-white p-4 rounded-lg border">
-                                    <button id="anxietyBtn" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm">
-                                        ✨ Help with Dental Anxiety
+                            <div id="aftercareOutput" class="mt-4 prose max-w-none p-4 bg-gray-50 rounded-lg border border-gray-200" style="display: none;"></div>
+
+                            <div class="mt-4">
+                                <div class="flex gap-2">
+                                    <input type="text" id="followUpInput" class="flex-grow px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition" placeholder="Ask a follow-up question...">
+                                    <button id="followUpBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm">
+                                        ✨ Ask
                                     </button>
-                                    <div id="anxietyLoader" class="items-center mt-4 hidden"><div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div><span>Finding tips...</span></div>
-                                    <div id="anxietyOutput" class="mt-4 prose max-w-none p-3 bg-gray-50 rounded-lg border" style="display: none;"></div>
                                 </div>
-                                <!-- Translation -->
-                                <div class="bg-white p-4 rounded-lg border">
-                                    <div class="flex gap-2">
-                                        <select id="languageSelect" class="flex-grow px-4 py-2 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-cyan-500">
-                                            <option value="Spanish">Spanish</option>
-                                            <option value="French">French</option>
-                                            <option value="Mandarin Chinese">Mandarin Chinese</option>
-                                            <option value="Vietnamese">Vietnamese</option>
-                                            <option value="Tagalog">Tagalog</option>
-                                        </select>
-                                        <button id="translateBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm">
-                                            ✨ Translate
-                                        </button>
-                                    </div>
-                                    <div id="translateLoader" class="items-center mt-4 hidden"><div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div><span>Translating...</span></div>
-                                    <div id="translateOutput" class="mt-4 prose max-w-none p-3 bg-gray-50 rounded-lg border" style="display: none;"></div>
+                                <div id="followUpLoader" class="items-center mt-4 hidden">
+                                    <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div>
+                                    <span>Getting an answer...</span>
                                 </div>
+                                <div id="followUpOutput" class="mt-4 prose max-w-none p-4 bg-gray-50 rounded-lg border border-gray-200" style="display: none;"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Panel 2: Cost Estimator -->
-                    <div id="tab-panel-cost" class="tab-panel hidden">
-                        <h3 class="text-lg font-semibold text-gray-700 mb-4 text-center">Procedure Cost Estimator</h3>
-                        <div class="max-w-md mx-auto bg-white p-4 rounded-lg border">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="procedureCost" class="block text-sm font-medium text-gray-700">Total Procedure Cost ($)</label>
-                                    <input type="number" id="procedureCost" class="w-full mt-1 px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500" placeholder="e.g., 1200">
-                                </div>
-                                <div>
-                                    <label for="insuranceCoverage" class="block text-sm font-medium text-gray-700">Insurance Coverage (%)</label>
-                                    <input type="number" id="insuranceCoverage" class="w-full mt-1 px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500" placeholder="e.g., 80">
-                                </div>
+                    <!-- Section 2: Patient Support -->
+                    <div>
+                         <h3 class="text-lg font-semibold text-gray-700 mb-3 text-center">Patient Support</h3>
+                        <div class="bg-white p-4 rounded-lg border">
+                             <!-- Anxiety Tips -->
+                            <button id="anxietyBtn" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm mb-3">
+                                ✨ Help with Dental Anxiety
+                            </button>
+                            <div id="anxietyLoader" class="items-center mt-4 hidden">
+                                <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div>
+                                <span>Finding calming tips...</span>
                             </div>
-                            <div class="mt-4 text-center">
-                                <button id="calculateCostBtn" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-6 rounded-lg transition shadow-sm">
-                                    ✨ Calculate Estimate
-                                </button>
-                            </div>
-                            <div id="costOutput" class="mt-4 prose max-w-none p-4 bg-gray-50 rounded-lg border" style="display: none;"></div>
+                            <div id="anxietyOutput" class="mt-4 prose max-w-none p-4 bg-gray-50 rounded-lg border border-gray-200" style="display: none;"></div>
+
+                             <!-- Language Translation -->
+                             <div class="mt-4">
+                                <div class="flex gap-2">
+                                    <select id="languageSelect" class="flex-grow px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                        <option value="Spanish">Spanish</option>
+                                        <option value="French">French</option>
+                                        <option value="Mandarin Chinese">Mandarin Chinese</option>
+                                        <option value="Vietnamese">Vietnamese</option>
+                                        <option value="Tagalog">Tagalog</option>
+                                    </select>
+                                    <button id="translateBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm">
+                                        ✨ Translate
+                                    </button>
+                                </div>
+                                <div id="translateLoader" class="items-center mt-4 hidden">
+                                    <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div>
+                                    <span>Translating...</span>
+                                </div>
+                                <div id="translateOutput" class="mt-4 prose max-w-none p-4 bg-gray-50 rounded-lg border border-gray-200" style="display: none;"></div>
+                             </div>
                         </div>
                     </div>
                 </div>
@@ -255,483 +188,6 @@
         </div>
     </div>
 
-
-    <script>
-        // DOM Elements
-        const generateBtn = document.getElementById('generateBtn');
-        const procedureInput = document.getElementById('procedure');
-        const patientAgeSelect = document.getElementById('patientAge');
-        const toneSelect = document.getElementById('tone');
-        const outputContainer = document.getElementById('outputContainer');
-        const outputDiv = document.getElementById('output');
-        const loader = document.getElementById('loader');
-        const copyBtn = document.getElementById('copyBtn');
-        const copyBtnText = document.getElementById('copyBtnText');
-        const citationsContainer = document.getElementById('citations');
-        const citationLinks = document.getElementById('citationLinks');
-        const errorMessageDiv = document.getElementById('error-message');
-        
-        // Follow-up Feature DOM Elements
-        const followUpContainer = document.getElementById('followUpContainer');
-        const aftercareBtn = document.getElementById('aftercareBtn');
-        const aftercareLoader = document.getElementById('aftercareLoader');
-        const aftercareOutput = document.getElementById('aftercareOutput');
-        const followUpBtn = document.getElementById('followUpBtn');
-        const followUpInput = document.getElementById('followUpInput');
-        const followUpLoader = document.getElementById('followUpLoader');
-        const followUpOutput = document.getElementById('followUpOutput');
-
-        // NEW Feature DOM Elements
-        const anxietyBtn = document.getElementById('anxietyBtn');
-        const anxietyLoader = document.getElementById('anxietyLoader');
-        const anxietyOutput = document.getElementById('anxietyOutput');
-        const translateBtn = document.getElementById('translateBtn');
-        const languageSelect = document.getElementById('languageSelect');
-        const translateLoader = document.getElementById('translateLoader');
-        const translateOutput = document.getElementById('translateOutput');
-        
-        // Modal DOM Elements
-        const infoModal = document.getElementById('infoModal');
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalPanel = document.getElementById('modalPanel');
-        const modalCloseBtn = document.getElementById('modalCloseBtn');
-
-        // Tab UI Elements
-        const tabBtnSupport = document.getElementById('tab-btn-support');
-        const tabBtnCost = document.getElementById('tab-btn-cost');
-        const tabPanelSupport = document.getElementById('tab-panel-support');
-        const tabPanelCost = document.getElementById('tab-panel-cost');
-
-        // Cost Estimator DOM Elements
-        const procedureCostInput = document.getElementById('procedureCost');
-        const insuranceCoverageInput = document.getElementById('insuranceCoverage');
-        const calculateCostBtn = document.getElementById('calculateCostBtn');
-        const costOutputDiv = document.getElementById('costOutput');
-
-        // State
-        let currentProcedure = '';
-        let currentPatientProfile = '';
-
-    // Image UI
-    const generateImageBtn = document.getElementById('generateImageBtn');
-    const imageContainer = document.getElementById('imageContainer');
-    const generatedImage = document.getElementById('generatedImage');
-
-        // Event Listeners
-        generateBtn.addEventListener('click', generateExplanation);
-        procedureInput.addEventListener('keyup', e => e.key === 'Enter' && generateBtn.click());
-        copyBtn.addEventListener('click', copyOutputText);
-        aftercareBtn.addEventListener('click', generateAftercare);
-        followUpBtn.addEventListener('click', askFollowUp);
-        followUpInput.addEventListener('keyup', e => e.key === 'Enter' && followUpBtn.click());
-        anxietyBtn.addEventListener('click', generateAnxietyTips);
-        translateBtn.addEventListener('click', translateText);
-        modalCloseBtn.addEventListener('click', hideModal);
-        modalOverlay.addEventListener('click', hideModal);
-        calculateCostBtn.addEventListener('click', calculateCost);
-        tabBtnSupport.addEventListener('click', () => switchTab('support'));
-        tabBtnCost.addEventListener('click', () => switchTab('cost'));
-    generateImageBtn.addEventListener('click', createSimpleDiagram);
-
-        function switchTab(target) {
-            const isSupport = target === 'support';
-
-            // Toggle panel visibility
-            tabPanelSupport.classList.toggle('hidden', !isSupport);
-            tabPanelCost.classList.toggle('hidden', isSupport);
-
-            // Toggle button styles
-            tabBtnSupport.classList.toggle('tab-btn-active', isSupport);
-            tabBtnSupport.classList.toggle('tab-btn-inactive', !isSupport);
-            tabBtnCost.classList.toggle('tab-btn-active', !isSupport);
-            tabBtnCost.classList.toggle('tab-btn-inactive', isSupport);
-
-            // Update ARIA attribute
-            tabBtnSupport.setAttribute('aria-current', isSupport ? 'page' : 'false');
-            tabBtnCost.setAttribute('aria-current', !isSupport ? 'page' : 'false');
-        }
-
-        function calculateCost() {
-            const cost = parseFloat(procedureCostInput.value);
-            const coverage = parseFloat(insuranceCoverageInput.value);
-
-            costOutputDiv.style.display = 'none';
-            costOutputDiv.innerHTML = '';
-
-            if (isNaN(cost) || cost <= 0) {
-                costOutputDiv.innerHTML = '<p class="text-red-600">Please enter a valid total cost for the procedure.</p>';
-                costOutputDiv.style.display = 'block';
-                return;
-            }
-
-            if (isNaN(coverage) || coverage < 0 || coverage > 100) {
-                costOutputDiv.innerHTML = '<p class="text-red-600">Please enter a valid insurance coverage percentage (0-100).</p>';
-                costOutputDiv.style.display = 'block';
-                return;
-            }
-
-            const patientPays = cost - (cost * (coverage / 100));
-            const insurancePays = cost * (coverage / 100);
-
-            const resultHTML = `
-                <p><strong>Total Procedure Cost:</strong> $${cost.toFixed(2)}</p>
-                <p><strong>Insurance Coverage (${coverage}%):</strong> -$${insurancePays.toFixed(2)}</p>
-                <hr class="my-2">
-                <p class="font-bold"><strong>Estimated Patient Out-of-Pocket Cost:</strong> $${patientPays.toFixed(2)}</p>
-                <p class="text-sm text-gray-500 mt-2"><em>This is an estimate. Please confirm details with your insurance provider.</em></p>
-            `;
-
-            costOutputDiv.innerHTML = resultHTML;
-            costOutputDiv.style.display = 'block';
-        }
-
-        function copyOutputText() {
-            const textToCopy = outputDiv.innerText;
-            const tempTextArea = document.createElement('textarea');
-            tempTextArea.value = textToCopy;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempTextArea);
-            copyBtnText.innerText = 'Copied!';
-            setTimeout(() => { copyBtnText.innerText = 'Copy'; }, 2000);
-        }
-
-        function showModal(title, message) {
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalMessage').textContent = message;
-            infoModal.classList.remove('hidden');
-            setTimeout(() => {
-                modalOverlay.classList.remove('opacity-0');
-                modalPanel.classList.remove('opacity-0', 'scale-95');
-            }, 10);
-        }
-
-        function hideModal() {
-            modalOverlay.classList.add('opacity-0');
-            modalPanel.classList.add('opacity-0', 'scale-95');
-            setTimeout(() => {
-                infoModal.classList.add('hidden');
-            }, 200);
-        }
-
-        async function makeApiCallWithRetry(payload) {
-            // This function now calls our own backend server, not Google's API directly.
-            // The server will add the API key securely.
-            const apiUrl = '/api/generate'; // The endpoint on our own server
-            const options = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            };
-
-            let attempts = 0;
-            const maxAttempts = 4;
-            while (attempts < maxAttempts) {
-                try {
-                    const response = await fetch(apiUrl, options);
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        // Display more detailed error from the server
-                        throw new Error(`API Error: ${response.status} ${response.statusText}. Details: ${errorData.details || errorData.error}`);
-                    }
-                    return response.json();
-                } catch (error) {
-                    attempts++;
-                    if (attempts >= maxAttempts) throw error;
-                    const delay = Math.pow(2, attempts) * 1000;
-                    console.log(`Attempt ${attempts} failed. Retrying in ${delay}ms...`);
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                }
-            }
-        }
-
-        function displayResult(result, targetDiv, citationsConfig) {
-            const candidate = result.candidates?.[0];
-            if (candidate && candidate.content?.parts?.[0]?.text) {
-                const raw = candidate.content.parts[0].text || '';
-
-                // Detect if the response looks like HTML (simple heuristic)
-                const looksLikeHtml = /<[^>]+>/.test(raw);
-
-                if (looksLikeHtml && window.DOMPurify) {
-                    // Only allow a conservative set of tags and attributes
-                    const clean = DOMPurify.sanitize(raw, {
-                        ALLOWED_TAGS: ['p','strong','em','ol','ul','li','h3','br','a','blockquote'],
-                        ALLOWED_ATTR: ['href', 'target', 'rel']
-                    });
-                    targetDiv.innerHTML = clean;
-                } else {
-                    // Fallback: render as plain text (escaped)
-                    targetDiv.innerText = raw;
-                }
-
-                targetDiv.style.display = 'block';
-
-                if (citationsConfig) {
-                    const { container, linksDiv } = citationsConfig;
-                    container.style.display = 'none';
-                    linksDiv.innerHTML = '';
-                    const groundingMetadata = candidate.groundingMetadata;
-                    if (groundingMetadata && groundingMetadata.groundingAttributions) {
-                        const sources = groundingMetadata.groundingAttributions
-                            .map(attr => ({ uri: attr.web?.uri, title: attr.web?.title }))
-                            .filter(source => source.uri && source.title);
-                        if (sources.length > 0) {
-                            sources.forEach(source => {
-                                const link = document.createElement('a');
-                                link.href = source.uri;
-                                link.textContent = source.title;
-                                link.target = '_blank';
-                                link.rel = 'noopener noreferrer';
-                                link.className = 'block truncate hover:underline text-cyan-600';
-                                linksDiv.appendChild(link);
-                            });
-                            container.style.display = 'block';
-                        }
-                    }
-                }
-            } else {
-                 if (result.promptFeedback && result.promptFeedback.blockReason) {
-                    showModal("Query Not Supported", "This AI tool is designed for dental topics. Your request was outside this scope. Please enter a dental term.");
-                    outputContainer.style.display = 'none';
-                 } else {
-                    targetDiv.innerText = "Sorry, the response from the model was empty. Please try again.";
-                    targetDiv.style.display = 'block';
-                 }
-            }
-        }
-        
-        function setLoadingState(loaderEl, btnEl, isLoading) {
-            const flexOrHidden = isLoading ? 'flex' : 'hidden';
-            // Use a different method to show/hide loaders to avoid conflicts
-            if(loaderEl.classList.contains('hidden') && isLoading){
-                loaderEl.classList.remove('hidden');
-            } else if (!isLoading) {
-                loaderEl.classList.add('hidden');
-            }
-            
-            if (isLoading) {
-                 if(loaderEl.style.display === 'none' || loaderEl.style.display === ''){
-                    loaderEl.style.display = 'flex';
-                }
-            } else {
-                loaderEl.style.display = 'none';
-            }
-
-
-            btnEl.disabled = isLoading;
-            if(isLoading) {
-                btnEl.classList.add('opacity-50');
-            } else {
-                btnEl.classList.remove('opacity-50');
-            }
-        }
-
-        async function generateExplanation() {
-            currentProcedure = procedureInput.value.trim();
-            errorMessageDiv.textContent = '';
-            if (!currentProcedure) {
-                errorMessageDiv.textContent = 'Please enter a dental procedure or term.';
-                return;
-            }
-            currentPatientProfile = patientAgeSelect.value;
-            const tone = toneSelect.value;
-
-            outputContainer.style.display = 'block';
-            outputDiv.style.display = 'none';
-            followUpContainer.style.display = 'none';
-            citationsContainer.style.display = 'none';
-            loader.style.display = 'flex';
-            generateBtn.disabled = true;
-            generateBtn.classList.add('opacity-50', 'cursor-not-allowed');
-
-            const systemPrompt = `You are an empathetic dental assistant AI. Explain complex dental procedures simply.
-                **Rules:**
-                1.  **No Medical Advice:** State this is not medical advice.
-                2.  **Disclaimer First:** Start with: "Please note: This is a simplified educational explanation and not medical advice. Always discuss any specific questions or concerns with your dentist."
-                3.  **Factual & Simple:** Use reputable sources. Translate dental terms into simple language.
-                4.  **Calm Tone:** Be reassuring and professional.`;
-            const userQuery = `Explain the dental procedure "${currentProcedure}" to ${currentPatientProfile}. Use a "${tone}" style.`;
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                tools: [{ "google_search": {} }],
-                systemInstruction: { parts: [{ text: systemPrompt }] },
-            };
-
-            try {
-                const result = await makeApiCallWithRetry(payload);
-                if (!result) return;
-                displayResult(result, outputDiv, { container: citationsContainer, linksDiv: citationLinks });
-                if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
-                     followUpContainer.style.display = 'block';
-                }
-                // Clear previous follow-up results and reset tabs
-                clearFollowUpOutputs();
-                switchTab('support'); // Default to the support tab
-            } catch (error) {
-                console.error("Error:", error);
-                outputDiv.innerText = `An error occurred. Please try again.\n\n${error.message}`;
-                outputDiv.style.display = 'block';
-            } finally {
-                loader.style.display = 'none';
-                generateBtn.disabled = false;
-                generateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        }
-
-        function clearFollowUpOutputs() {
-            [aftercareOutput, followUpOutput, anxietyOutput, translateOutput, costOutputDiv].forEach(el => {
-                if (el) {
-                    el.style.display = 'none';
-                    el.innerHTML = '';
-                }
-            });
-        }
-        
-        async function generateAftercare() {
-            setLoadingState(aftercareLoader, aftercareBtn, true);
-            aftercareOutput.style.display = 'none';
-
-            const systemPrompt = `You are a dental assistant AI. Generate a simple, bulleted list of common aftercare instructions.
-                **Rules:**
-                1.  **Disclaimer First:** Start with: "Important: These are general tips. Your dentist will provide instructions specific to your situation. Call your dental office if you have severe pain, bleeding, or swelling."
-                2.  **Actionable Tips:** Focus on eating, pain management, and cleaning.`;
-            const userQuery = `What are general aftercare tips for ${currentPatientProfile} after a "${currentProcedure}" procedure?`;
-            
-            try {
-                const result = await makeApiCallWithRetry({
-                    contents: [{ parts: [{ text: userQuery }] }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
-                });
-                if (result) displayResult(result, aftercareOutput);
-            } catch (error) {
-                console.error("Aftercare Error:", error);
-                aftercareOutput.innerText = `An error occurred: ${error.message}`;
-            } finally {
-                setLoadingState(aftercareLoader, aftercareBtn, false);
-            }
-        }
-
-        async function askFollowUp() {
-            const question = followUpInput.value.trim();
-            if (!question) return;
-
-            setLoadingState(followUpLoader, followUpBtn, true);
-            followUpOutput.style.display = 'none';
-
-            const systemPrompt = `You are a dental assistant AI. A patient has a follow-up question. Answer simply and reassuringly.
-                **Rules:**
-                1.  **No Medical Advice:** Reiterate this is educational.
-                2.  **Stay on Topic:** Directly answer the question in context.
-                3.  **Complex Questions:** If complex, advise speaking to their dentist.`;
-            const userQuery = `Context: Procedure is "${currentProcedure}", patient is ${currentPatientProfile}. Question: "${question}". Provide a simple answer.`;
-
-            try {
-                const result = await makeApiCallWithRetry({
-                    contents: [{ parts: [{ text: userQuery }] }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
-                });
-                if (result) {
-                    displayResult(result, followUpOutput);
-                    followUpInput.value = '';
-                }
-            } catch (error) {
-                console.error("Follow-up Error:", error);
-                followUpOutput.innerText = `An error occurred: ${error.message}`;
-            } finally {
-                setLoadingState(followUpLoader, followUpBtn, false);
-            }
-        }
-        
-        async function generateAnxietyTips() {
-            setLoadingState(anxietyLoader, anxietyBtn, true);
-            anxietyOutput.style.display = 'none';
-            
-            const systemPrompt = `You are an empathetic dental assistant AI. Create a list of reassuring, practical tips for a patient who is nervous about an upcoming dental procedure.
-                **Rules:**
-                1. **Non-Medical:** These are coping strategies, not medical advice.
-                2. **Positive Framing:** Use positive and calming language.
-                3. **Actionable:** Provide concrete actions the patient can take.`;
-            const userQuery = `A patient (${currentPatientProfile}) is feeling anxious about their upcoming "${currentProcedure}" procedure. What are some simple tips to help them manage their anxiety before and during the appointment?`;
-
-            try {
-                const result = await makeApiCallWithRetry({
-                    contents: [{ parts: [{ text: userQuery }] }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
-                });
-                if (result) displayResult(result, anxietyOutput);
-            } catch (error) {
-                console.error("Anxiety Tips Error:", error);
-                anxietyOutput.innerText = `An error occurred: ${error.message}`;
-            } finally {
-                setLoadingState(anxietyLoader, anxietyBtn, false);
-            }
-        }
-
-        async function translateText() {
-            const targetLanguage = languageSelect.value;
-            const originalText = outputDiv.innerText;
-            if (!originalText) return;
-            
-            setLoadingState(translateLoader, translateBtn, true);
-            translateOutput.style.display = 'none';
-
-            const systemPrompt = `You are an expert multilingual translator specializing in medical and dental terminology. Your task is to translate the provided text accurately and clearly into the target language, maintaining a simple, patient-friendly tone.`;
-            const userQuery = `Translate the following text into ${targetLanguage}:\n\n---\n\n${originalText}`;
-            
-            try {
-                const result = await makeApiCallWithRetry({
-                    contents: [{ parts: [{ text: userQuery }] }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
-                });
-                if (result) displayResult(result, translateOutput);
-            } catch (error) {
-                console.error("Translation Error:", error);
-                translateOutput.innerText = `An error occurred: ${error.message}`;
-            } finally {
-                setLoadingState(translateLoader, translateBtn, false);
-            }
-        }
-
-        async function createSimpleDiagram() {
-            // Use currentProcedure if available otherwise prompt for a procedure
-            const subject = currentProcedure || procedureInput.value.trim() || 'dental crown placement';
-            const prompt = `Create a very simple, clear, cartoon-style diagram explaining how a ${subject} is done for a patient. Use simple shapes, label the important parts (tooth, crown, gum), and avoid detailed anatomy. Keep colors limited and the style friendly and child-appropriate.`;
-
-            generateImageBtn.disabled = true;
-            generateImageBtn.classList.add('opacity-50');
-
-            try {
-                const resp = await fetch('/.netlify/functions/generate-image', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt })
-                });
-                if (!resp.ok) {
-                    const err = await resp.json().catch(()=>({}));
-                    throw new Error(err.error || 'Image API error');
-                }
-                const data = await resp.json();
-                // Expect either image_url or b64_json
-                if (data.image_url) {
-                    generatedImage.src = data.image_url;
-                    imageContainer.style.display = 'block';
-                } else if (data.b64_json) {
-                    generatedImage.src = 'data:image/png;base64,' + data.b64_json;
-                    imageContainer.style.display = 'block';
-                } else {
-                    throw new Error('No image returned');
-                }
-            } catch (error) {
-                console.error('Image generation error:', error);
-                showModal('Image generation failed', error.message || 'Unknown error');
-            } finally {
-                generateImageBtn.disabled = false;
-                generateImageBtn.classList.remove('opacity-50');
-            }
-        }
-    </script>
+    <script src="js/app.js" type="module"></script>
 </body>
 </html>
-

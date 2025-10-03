@@ -12,6 +12,13 @@
 # It forwards any request from "/api/..." to your serverless function.
 # This way, your index.html can use the same "/api/generate" path for both
 # local development (server.js) and the live Netlify deployment.
+
+# Specific redirect for image generation to ensure it's always routed correctly.
+[[redirects]]
+  from = "/api/generate-image"
+  to = "/.netlify/functions/generate-image"
+  status = 200
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
