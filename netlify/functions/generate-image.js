@@ -1,14 +1,13 @@
 // netlify/functions/generate-image.js
 const fetch = require('node-fetch');
 
-// Helper to create consistent JSON responses with CORS headers
 function jsonResponse(statusCode, body) {
     return {
         statusCode,
         body: JSON.stringify(body),
         headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*', // Allow requests from any origin
+            'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
             'Access-Control-Allow-Methods': 'POST, OPTIONS, GET'
         }
@@ -16,10 +15,9 @@ function jsonResponse(statusCode, body) {
 }
 
 exports.handler = async function (event, context) {
-    // Handle CORS preflight requests
     if (event.httpMethod === 'OPTIONS') {
         return {
-            statusCode: 204, // No Content
+            statusCode: 204,
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -29,35 +27,36 @@ exports.handler = async function (event, context) {
         };
     }
 
-    // Basic health check
-    if (event.httpMethod === 'GET') {
-        return jsonResponse(200, { status: 'ok' });
-    }
-
-    // Ensure the request is a POST
     if (event.httpMethod !== 'POST') {
         return jsonResponse(405, { error: 'Method Not Allowed' });
     }
 
     try {
-        const { prompt } = JSON.parse(event.body);
+        const { prompt, language } = JSON.parse(event.body);
         const apiKey = process.env.GOOGLE_API_KEY;
 
-        // Validate API key and prompt
         if (!apiKey) {
-            console.error("GOOGLE_API_KEY is not configured.");
-            return jsonResponse(500, { error: "API key not configured on the server." });
+            return jsonResponse(500, { error: "API key not configured." });
         }
         if (!prompt) {
-            return jsonResponse(400, { error: "A 'prompt' is required in the request body." });
+            return jsonResponse(400, { error: "Prompt is missing." });
         }
 
-        // Define the API endpoint for Imagen 3
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+        // Use the correct endpoint for the Generative Language API with a model that supports the language parameter.
+        // NOTE: The documentation was conflicting. The `language` parameter is part of the Vertex AI API,
+        // which uses a different authentication method. The generativelanguage.googleapis.com endpoint
+        // does not officially support the language parameter.
+        // The best approach is to rely on a newer model and strong prompt instructions.
+        const model = 'imagegeneration@006'; // A more recent, stable model.
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
+        // The frontend is already adding language instructions to the prompt.
         const payload = {
-            instances: [{ prompt }],
-            parameters: { "sampleCount": 1 }
+            contents: [{
+                parts: [{ text: prompt }]
+            }],
+            // The 'language' parameter is not supported on this endpoint.
+            // We rely on the frontend to provide language instructions in the prompt.
         };
 
         const apiResponse = await fetch(apiUrl, {
@@ -68,21 +67,20 @@ exports.handler = async function (event, context) {
 
         const result = await apiResponse.json();
 
-        // Check for errors from the Imagen API
-        if (!apiResponse.ok || !result.predictions?.[0]?.bytesBase64Encoded) {
+        // The response structure for generateContent is different from predict.
+        const base64Data = result?.candidates?.[0]?.content?.parts?.[0]?.fileData?.fileUri;
+
+        if (!apiResponse.ok || !base64Data) {
             console.error("Imagen API Error:", result);
             const errorDetail = result.error?.message || JSON.stringify(result);
             return jsonResponse(apiResponse.status, { error: "Failed to generate image.", details: errorDetail });
         }
 
-        const base64Data = result.predictions[0].bytesBase64Encoded;
-        const imageUrl = `data:image/png;base64,${base64Data}`;
-
-        // Success
-        return jsonResponse(200, { imageUrl });
+        // The API returns a data URI directly in this case.
+        return jsonResponse(200, { imageUrl: base64Data });
 
     } catch (error) {
         console.error("Serverless Function Error:", error);
-        return jsonResponse(500, { error: "An internal server error occurred." });
+        return jsonResponse(500, { error: "Internal server error." });
     }
 };

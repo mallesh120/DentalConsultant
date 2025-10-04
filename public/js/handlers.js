@@ -163,25 +163,21 @@ export async function translateText() {
 }
 
 export async function createSimpleDiagram() {
-    // Use currentProcedure if available otherwise prompt for a procedure
     const subject = currentProcedure || dom.procedureInput.value.trim() || 'dental crown placement';
-    const language = dom.languageSelect.value || 'English'; // Default to English if nothing is selected
+    const language = dom.languageSelect.value || 'en'; // Use language code 'en' for English
+
     let prompt = `Create a very simple, clear, cartoon-style diagram explaining how a ${subject} is done for a patient. Use simple shapes, label the important parts (tooth, crown, gum), and avoid detailed anatomy. Keep colors limited and the style friendly and child-appropriate.`;
+    prompt += ` IMPORTANT: All text and labels in the diagram must be written in the language with this code: ${language}.`;
 
-    // Add a specific instruction for the language
-    prompt += ` IMPORTANT: All text and labels in the diagram must be written in ${language}.`;
-
-    dom.generateImageBtn.disabled = true;
-    dom.generateImageBtn.classList.add('opacity-50');
-    dom.imageContainer.style.display = 'none'; // Hide previous image
+    ui.setLoadingState(dom.generateImageBtn, dom.generateImageBtn, true);
+    dom.imageContainer.style.display = 'none';
 
     try {
-        const data = await api.makeApiCallWithRetry({ prompt }, '/api/generate-image');
+        const data = await api.makeApiCallWithRetry({ prompt, language }, '/api/generate-image');
 
-        // The backend function returns { imageUrl: "data:image/png;base64,..." }
         if (data.imageUrl) {
             dom.generatedImage.src = data.imageUrl;
-            dom.imageContainer.style.display = 'flex'; // Use flex to be consistent with other styles
+            dom.imageContainer.style.display = 'flex';
         } else {
             throw new Error('No image data found in the API response.');
         }
@@ -190,7 +186,6 @@ export async function createSimpleDiagram() {
         console.error('Image generation error:', error);
         ui.showModal('Image Generation Failed', error.message || 'An unknown error occurred.');
     } finally {
-        dom.generateImageBtn.disabled = false;
-        dom.generateImageBtn.classList.remove('opacity-50');
+        ui.setLoadingState(dom.generateImageBtn, dom.generateImageBtn, false);
     }
 }
