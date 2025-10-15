@@ -22,6 +22,11 @@
                     <h1 class="text-3xl font-bold text-gray-800">Dental AI Explainer</h1>
                 </div>
                 <p class="text-gray-500">Simplify complex dental topics for your patients.</p>
+                <div class="mt-4">
+                    <button id="myLibraryBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg transition">
+                        My Library
+                    </button>
+                </div>
             </div>
 
             <!-- Form Inputs -->
@@ -60,12 +65,20 @@
             <div id="outputContainer" class="p-6 md:p-8 border-t border-gray-200" style="display: none;">
                 <div class="flex justify-between items-center mb-4">
                      <h2 class="text-xl font-bold text-gray-800">Simplified Explanation</h2>
-                     <button id="copyBtn" class="flex items-center text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                        <span id="copyBtnText">Copy</span>
-                     </button>
+                     <div class="flex items-center space-x-2">
+                         <button id="saveBtn" class="flex items-center text-sm bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium py-2 px-4 rounded-lg transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v1h2a1 1 0 011 1v3a1 1 0 01-1 1h-2v1a2 2 0 01-2 2H7a2 2 0 01-2-2v-1H3a1 1 0 01-1-1V6a1 1 0 011-1h2V5z" />
+                            </svg>
+                            <span id="saveBtnText">Save</span>
+                         </button>
+                         <button id="copyBtn" class="flex items-center text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            <span id="copyBtnText">Copy</span>
+                         </button>
+                     </div>
                 </div>
                 <div id="loader" class="flex justify-center items-center h-40">
                     <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
@@ -74,7 +87,7 @@
                     <button id="generateImageBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg transition">✨ Create a Simple Diagram</button>
                 </div>
                 <div id="imageContainer" class="mt-4 flex justify-center items-center" style="display:none;">
-                    <img id="generatedImage" src="" alt="Generated diagram" class="max-w-full rounded-lg border" />
+                    <!-- SVG will be injected here -->
                 </div>
                 <div id="output" class="prose max-w-none p-5 bg-gray-50 rounded-lg border border-gray-200 whitespace-pre-wrap"></div>
                 <div id="citations" class="mt-6" style="display: none;">
@@ -96,12 +109,20 @@
                             <button id="aftercareBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm mb-3">
                                 ✨ Generate Aftercare Tips
                             </button>
+                            <button id="checklistBtn" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm mb-3">
+                                ✨ Generate Procedure Checklist
+                            </button>
                              <div id="aftercareLoader" class="items-center mt-4 hidden">
                                 <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6 mr-2"></div>
                                 <span>Generating tips...</span>
                             </div>
                             <div id="aftercareOutput" class="mt-4 prose max-w-none p-4 bg-gray-50 rounded-lg border border-gray-200" style="display: none;"></div>
-
+                            <div id="checklistOutput" class="mt-4 prose max-w-none p-4 bg-gray-50 rounded-lg border border-gray-200" style="display: none;">
+                                <!-- Checklist will be rendered here -->
+                                <button id="printChecklistBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition shadow-sm mt-4">
+                                    Print Checklist
+                                </button>
+                            </div>
                             <div class="mt-4">
                                 <div class="flex gap-2">
                                     <input type="text" id="followUpInput" class="flex-grow px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition" placeholder="Ask a follow-up question...">
@@ -183,6 +204,25 @@
             <div class="mt-5 text-right">
                 <button id="modalCloseBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition">
                     OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- "My Library" Modal -->
+    <div id="libraryModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div id="libraryModalOverlay" class="fixed inset-0 bg-black bg-opacity-50"></div>
+        <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-3xl p-6 transform">
+            <div class="flex justify-between items-center pb-3 border-b">
+                <h3 class="text-2xl font-bold text-gray-800">My Saved Library</h3>
+                <button id="libraryCloseBtn" class="text-gray-500 hover:text-gray-800">&times;</button>
+            </div>
+            <div id="libraryContent" class="mt-4 max-h-[70vh] overflow-y-auto">
+                <!-- Saved items will be injected here -->
+            </div>
+            <div class="mt-6 text-right border-t pt-4">
+                 <button id="clearHistoryBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition">
+                    Clear All
                 </button>
             </div>
         </div>

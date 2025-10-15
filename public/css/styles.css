@@ -24,3 +24,23 @@ body {
 .modal-panel {
     transition: transform 0.2s ease-in-out;
 }
+
+/* SVG Tooltip Styling */
+.svg-tooltip {
+    position: fixed; /* Use fixed positioning to place relative to viewport */
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    max-width: 250px;
+    text-align: center;
+    pointer-events: none; /* Prevent tooltip from blocking clicks */
+}
+
+.svg-tooltip.visible {
+    opacity: 1;
+}
