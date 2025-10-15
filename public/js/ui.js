@@ -110,3 +110,51 @@ export function setLoadingState(loaderEl, btnEl, isLoading) {
         btnEl.classList.remove('opacity-50');
     }
 }
+
+export function showTooltip(text, element) {
+    removeExistingTooltip(); // Ensure no duplicates
+    const tooltip = document.createElement('div');
+    tooltip.id = 'svg-tooltip';
+    tooltip.className = 'svg-tooltip'; // Use class for styling
+    tooltip.textContent = text;
+    document.body.appendChild(tooltip);
+
+    const targetRect = element.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+
+    // Position tooltip above the element, centered
+    let top = targetRect.top - tooltipRect.height - 10; // 10px offset
+    let left = targetRect.left + (targetRect.width / 2) - (tooltipRect.width / 2);
+
+    // Adjust if tooltip goes off-screen
+    if (top < 0) {
+        top = targetRect.bottom + 10; // Show below if not enough space above
+    }
+    if (left < 0) {
+        left = 10;
+    }
+    if (left + tooltipRect.width > window.innerWidth) {
+        left = window.innerWidth - tooltipRect.width - 10;
+    }
+
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top}px`;
+
+    // Fade in
+    setTimeout(() => tooltip.classList.add('visible'), 10);
+}
+
+export function removeExistingTooltip() {
+    const existingTooltip = document.getElementById('svg-tooltip');
+    if (existingTooltip) {
+        existingTooltip.remove();
+    }
+}
+
+export function showLibrary() {
+    dom.libraryModal.classList.remove('hidden');
+}
+
+export function hideLibrary() {
+    dom.libraryModal.classList.add('hidden');
+}

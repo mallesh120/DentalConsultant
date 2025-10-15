@@ -1,6 +1,7 @@
 import * as dom from './dom.js';
 import * as ui from './ui.js';
 import * as api from './api.js';
+import * as history from './history.js';
 
 // State
 let currentProcedure = '';
@@ -162,30 +163,178 @@ export async function translateText() {
     }
 }
 
-export async function createSimpleDiagram() {
-    const subject = currentProcedure || dom.procedureInput.value.trim() || 'dental crown placement';
-    const language = dom.languageSelect.value || 'en'; // Use language code 'en' for English
+async function handleSvgPartClick(event) {
+    const partId = event.target.id;
+    if (!partId) return;
 
-    let prompt = `Create a very simple, clear, cartoon-style diagram explaining how a ${subject} is done for a patient. Use simple shapes, label the important parts (tooth, crown, gum), and avoid detailed anatomy. Keep colors limited and the style friendly and child-appropriate.`;
-    prompt += ` IMPORTANT: All text and labels in the diagram must be written in the language with this code: ${language}.`;
+    // Remove any existing tooltips immediately
+    ui.removeExistingTooltip();
+
+    const prompt = `In one very simple sentence, explain what "${partId.replace(/-/g, ' ')}" is in the context of a dental procedure.`;
+    const systemPrompt = "You are a dental assistant AI. Provide a one-sentence, patient-friendly definition for the given dental term. Do not add any disclaimers.";
+
+    try {
+        const result = await api.makeApiCallWithRetry({
+            contents: [{ parts: [{ text: prompt }] }],
+            systemInstruction: { parts: [{ text: systemPrompt }] },
+        });
+
+        const explanation = result.candidates[0]?.content?.parts[0]?.text;
+        if (explanation) {
+            ui.showTooltip(explanation, event.target);
+        }
+    } catch (error) {
+        console.error("SVG Click-to-learn Error:", error);
+        // Optionally show a small error tooltip
+        ui.showTooltip("Could not load explanation.", event.target);
+    }
+}
+
+
+export async function generateInteractiveDiagram() {
+    const subject = currentProcedure || dom.procedureInput.value.trim();
+    if (!subject) {
+        ui.showModal('Cannot Generate Diagram', 'Please generate an explanation for a procedure first.');
+        return;
+    }
+
+    const prompt = `Generate a simple, patient-friendly SVG diagram illustrating the dental procedure: "${subject}". Key elements to include are the tooth, gum, and any relevant tools or prosthetics (like a crown or implant). Make sure each key element has a unique ID, like 'tooth', 'gum', 'crown'.`;
 
     ui.setLoadingState(dom.generateImageBtn, dom.generateImageBtn, true);
     dom.imageContainer.style.display = 'none';
+    dom.imageContainer.innerHTML = ''; // Clear previous SVG
 
     try {
-        const data = await api.makeApiCallWithRetry({ prompt, language }, '/api/generate-image');
+        const data = await api.makeApiCallWithRetry({ prompt }, '/api/generate-svg-diagram');
 
-        if (data.imageUrl) {
-            dom.generatedImage.src = data.imageUrl;
+        if (data.svg) {
+            dom.imageContainer.innerHTML = data.svg;
             dom.imageContainer.style.display = 'flex';
+
+            // Add click listeners to all elements with an ID within the SVG
+            const svgElementsWithIds = dom.imageContainer.querySelectorAll('svg [id]');
+            svgElementsWithIds.forEach(el => {
+                el.addEventListener('click', handleSvgPartClick);
+                el.style.cursor = 'pointer'; // Make it obvious they are clickable
+            });
         } else {
-            throw new Error('No image data found in the API response.');
+            throw new Error('No SVG data found in the API response.');
         }
 
     } catch (error) {
-        console.error('Image generation error:', error);
-        ui.showModal('Image Generation Failed', error.message || 'An unknown error occurred.');
+        console.error('SVG Generation Error:', error);
+        ui.showModal('Diagram Generation Failed', error.message || 'An unknown error occurred.');
     } finally {
         ui.setLoadingState(dom.generateImageBtn, dom.generateImageBtn, false);
     }
+}
+
+export function saveExplanation() {
+    const explanationText = dom.outputDiv.innerHTML; // Use innerHTML to preserve formatting
+    const diagramSvg = dom.imageContainer.innerHTML; // Get the SVG content
+
+    if (!explanationText || !currentProcedure) {
+        console.log("Nothing to save."); // Or show a subtle message to the user
+        return;
+    }
+
+    const explanation = {
+        id: `explanation_${Date.now()}`, // Simple unique ID
+        procedure: currentProcedure,
+        explanationText,
+        diagramSvg
+    };
+
+    history.saveToHistory(explanation);
+
+    // Provide feedback to the user
+    dom.saveBtnText.textContent = 'Saved!';
+    dom.saveBtn.disabled = true;
+    setTimeout(() => {
+        dom.saveBtnText.textContent = 'Save';
+        dom.saveBtn.disabled = false;
+    }, 2000);
+}
+
+export function showMyLibrary() {
+    const savedItems = history.getHistory();
+    const contentDiv = dom.libraryContent;
+    contentDiv.innerHTML = ''; // Clear previous content
+
+    if (savedItems.length === 0) {
+        contentDiv.innerHTML = '<p class="text-gray-500 text-center">Your saved library is empty.</p>';
+    } else {
+        savedItems.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'p-4 border-b last:border-b-0';
+
+            let diagramHTML = '';
+            if (item.diagramSvg) {
+                // The SVG needs to be scaled down for the library view.
+                diagramHTML = `<div class="w-1/4 float-right ml-4">${item.diagramSvg.replace('<svg', '<svg style="width:100%; height:auto;"')}</div>`;
+            }
+
+            itemDiv.innerHTML = `
+                <h4 class="text-lg font-bold text-gray-800 mb-2">${item.procedure}</h4>
+                <div class="prose max-w-none text-gray-700">
+                    ${diagramHTML}
+                    ${item.explanationText}
+                </div>
+            `;
+            contentDiv.appendChild(itemDiv);
+        });
+    }
+    ui.showLibrary();
+}
+
+export function clearHistoryHandler() {
+    history.clearHistory();
+    showMyLibrary(); // Re-render the (now empty) library
+}
+
+export async function generateChecklist() {
+    if (!currentProcedure) {
+        ui.showModal('Cannot Generate Checklist', 'Please generate an explanation for a procedure first.');
+        return;
+    }
+
+    ui.setLoadingState(dom.checklistBtn, dom.checklistBtn, true);
+    dom.checklistOutput.style.display = 'none';
+
+    const systemPrompt = `You are a dental assistant AI. Create two simple, bulleted checklists for a patient.
+    **RULES:**
+    1.  **Headings:** Use "### Before Your Procedure" and "### After Your Procedure".
+    2.  **Disclaimer:** Add a final line: "*This is a general guide. Follow the specific instructions from your dentist.*"
+    3.  **Simplicity:** Use clear, simple language suitable for a patient.`;
+    const userQuery = `Create a pre-procedure and post-procedure checklist for a patient (${currentPatientProfile}) having a "${currentProcedure}" procedure.`;
+
+    try {
+        const result = await api.makeApiCallWithRetry({
+            contents: [{ parts: [{ text: userQuery }] }],
+            systemInstruction: { parts: [{ text: systemPrompt }] },
+        });
+        if (result) {
+            ui.displayResult(result, dom.checklistOutput);
+            dom.checklistOutput.style.display = 'block';
+        }
+    } catch (error) {
+        console.error("Checklist Error:", error);
+        dom.checklistOutput.innerText = `An error occurred: ${error.message}`;
+    } finally {
+        ui.setLoadingState(dom.checklistBtn, dom.checklistBtn, false);
+    }
+}
+
+export function printChecklist() {
+    const checklistContent = dom.checklistOutput.innerHTML;
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write('<html><head><title>Dental Procedure Checklist</title>');
+    // Optional: Add some basic styling for printing
+    printWindow.document.write('<style> body { font-family: sans-serif; } h3 { border-bottom: 1px solid #ccc; padding-bottom: 5px; } ul { padding-left: 20px; } </style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write(`<h2>Checklist for: ${currentProcedure}</h2>`);
+    printWindow.document.write(checklistContent);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
 }
