@@ -60,10 +60,6 @@ exports.handler = async function (event) {
     }],
     systemInstruction: {
       parts: [{ text: systemPrompt }]
-    },
-    generationConfig: {
-      // We want raw SVG text, so JSON is not a good candidate output.
-      responseMimeType: "text/plain",
     }
   };
 
@@ -77,16 +73,29 @@ exports.handler = async function (event) {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Upstream API error', response.status, errorData);
-      return jsonResponse(response.status, { error: 'Upstream API error', details: errorData });
+      // If the response is not OK, the body might not be JSON.
+      // Read it as text to be safe and log it for debugging.
+      const errorText = await response.text();
+      console.error('Upstream API Error Response:', errorText);
+
+      // Try to parse it as JSON for a structured error, but fall back to the raw text.
+      let errorDetails;
+      try {
+          errorDetails = JSON.parse(errorText);
+      } catch (e) {
+          errorDetails = errorText; // It wasn't JSON, so use the raw text.
+      }
+      return jsonResponse(response.status, { error: 'Upstream API error', details: errorDetails });
     }
 
+    // If response is OK, we expect it to be JSON.
     const result = await response.json();
     const svgContent = result.candidates[0]?.content?.parts[0]?.text;
 
     if (!svgContent) {
-      return jsonResponse(500, { error: 'Failed to generate SVG content from API.' });
+      // Log the full successful response if we can't find the SVG content
+      console.error("Could not find svgContent in the successful API response:", JSON.stringify(result, null, 2));
+      return jsonResponse(500, { error: 'Failed to parse SVG content from a successful API response.' });
     }
 
     // Return the SVG content directly with an appropriate content type
