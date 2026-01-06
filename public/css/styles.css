@@ -1,0 +1,26 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+.loader {
+    border-top-color: #3498db;
+    -webkit-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.prose h3 {
+    margin-bottom: 0.5em;
+}
+.prose ul {
+    margin-top: 0;
+    padding-left: 1.25rem;
+}
+/* Modal Styles */
+.modal-overlay {
+    transition: opacity 0.2s ease-in-out;
+}
+.modal-panel {
+    transition: transform 0.2s ease-in-out;
+}

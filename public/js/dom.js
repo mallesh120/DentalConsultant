@@ -1,0 +1,36 @@
+// All DOM element constants are defined here to be imported by other modules.
+
+export const generateBtn = document.getElementById('generateBtn');
+export const procedureInput = document.getElementById('procedure');
+export const patientAgeSelect = document.getElementById('patientAge');
+export const toneSelect = document.getElementById('tone');
+export const outputContainer = document.getElementById('outputContainer');
+export const outputDiv = document.getElementById('output');
+export const loader = document.getElementById('loader');
+export const copyBtn = document.getElementById('copyBtn');
+export const copyBtnText = document.getElementById('copyBtnText');
+export const citationsContainer = document.getElementById('citations');
+export const citationLinks = document.getElementById('citationLinks');
+export const errorMessageDiv = document.getElementById('error-message');
+export const followUpContainer = document.getElementById('followUpContainer');
+export const aftercareBtn = document.getElementById('aftercareBtn');
+export const aftercareLoader = document.getElementById('aftercareLoader');
+export const aftercareOutput = document.getElementById('aftercareOutput');
+export const followUpBtn = document.getElementById('followUpBtn');
+export const followUpInput = document.getElementById('followUpInput');
+export const followUpLoader = document.getElementById('followUpLoader');
+export const followUpOutput = document.getElementById('followUpOutput');
+export const anxietyBtn = document.getElementById('anxietyBtn');
+export const anxietyLoader = document.getElementById('anxietyLoader');
+export const anxietyOutput = document.getElementById('anxietyOutput');
+export const translateBtn = document.getElementById('translateBtn');
+export const languageSelect = document.getElementById('languageSelect');
+export const translateLoader = document.getElementById('translateLoader');
+export const translateOutput = document.getElementById('translateOutput');
+export const infoModal = document.getElementById('infoModal');
+export const modalOverlay = document.getElementById('modalOverlay');
+export const modalPanel = document.getElementById('modalPanel');
+export const modalCloseBtn = document.getElementById('modalCloseBtn');
+export const generateImageBtn = document.getElementById('generateImageBtn');
+export const imageContainer = document.getElementById('imageContainer');
+export const generatedImage = document.getElementById('generatedImage');
