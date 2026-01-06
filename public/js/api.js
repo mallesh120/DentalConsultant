@@ -1,6 +1,7 @@
 // API interaction layer for Dental AI Explainer
 
 import { CONFIG, ERROR_MESSAGES } from './constants.js';
+import { findPreGeneratedExplanation } from './pregenerated-data.js';
 
 /**
  * Makes an API call with automatic retry logic
@@ -21,14 +22,30 @@ export async function makeApiCallWithRetry(payload) {
             const response = await fetch(CONFIG.API_ENDPOINT, options);
             
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
+                let errorData;
+                try {
+                    errorData = await response.json();
+                } catch (e) {
+                    errorData = { error: `HTTP ${response.status}: ${response.statusText}` };
+                }
                 
                 // Handle specific error codes
                 if (response.status === 429) {
                     throw new Error(ERROR_MESSAGES.RATE_LIMIT);
                 }
                 
-                const errorMsg = errorData.details || errorData.error || ERROR_MESSAGES.API_ERROR;
+                // Properly extract error message
+                let errorMsg = ERROR_MESSAGES.API_ERROR;
+                if (typeof errorData.error === 'string') {
+                    errorMsg = errorData.error;
+                } else if (typeof errorData.details === 'string') {
+                    errorMsg = errorData.details;
+                } else if (errorData.error && typeof errorData.error === 'object') {
+                    errorMsg = JSON.stringify(errorData.error);
+                } else if (errorData.details && typeof errorData.details === 'object') {
+                    errorMsg = JSON.stringify(errorData.details);
+                }
+                
                 throw new Error(`API Error (${response.status}): ${errorMsg}`);
             }
             
@@ -68,11 +85,30 @@ export async function makeApiCallWithRetry(payload) {
  * @returns {Promise<Object>} - API response
  */
 export async function generateExplanation(procedure, patientProfile, tone, systemPrompt) {
+    // First, check if we have pre-generated content
+    const preGenerated = await findPreGeneratedExplanation(procedure, patientProfile, tone);
+    
+    if (preGenerated) {
+        // Return in same format as API response
+        return {
+            candidates: [{
+                content: {
+                    parts: [{ text: preGenerated }],
+                    role: 'model'
+                },
+                finishReason: 'STOP',
+                index: 0,
+                safetyRatings: []
+            }],
+            usageMetadata: { cached: true }
+        };
+    }
+    
+    // Fallback to API if no pre-generated content
     const userQuery = `Explain the dental procedure "${procedure}" to ${patientProfile}. Use a "${tone}" style.`;
     
     const payload = {
         contents: [{ parts: [{ text: userQuery }] }],
-        tools: [{ "google_search": {} }],
         systemInstruction: { parts: [{ text: systemPrompt }] }
     };
     

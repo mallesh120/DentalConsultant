@@ -16,7 +16,8 @@ export const CONFIG = {
     MODAL_TRANSITION_DELAY: 200,
     
     // AI Model Configuration
-    MODEL_NAME: 'gemini-2.5-flash-preview-05-20'
+    MODEL_NAME: 'Mixtral-8x7B (Hugging Face)',
+    USE_PREGENERATED: true
 };
 
 export const PROMPTS = {
