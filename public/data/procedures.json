@@ -1,0 +1,74 @@
+{
+  "dental-filling": {
+    "name": "Dental Filling",
+    "explanations": {
+      "adult": {
+        "friendly": "**What is a Dental Filling?**\n\nA dental filling is a common procedure to repair a tooth damaged by decay. Your dentist will remove the decayed portion of the tooth and fill the space with a durable material.\n\n**How it Works:**\n1. Local anesthesia numbs the area\n2. Decay is removed using a drill or laser\n3. The cavity is cleaned and prepared\n4. Filling material (composite resin, amalgam, or porcelain) is placed\n5. The filling is shaped and polished\n\n**Duration:** 30-60 minutes\n\n**Aftercare:** Avoid chewing on the filled tooth for a few hours. Some sensitivity is normal for a few days.\n\n*Note: This is educational information, not medical advice. Consult your dentist for personalized care.*",
+        "technical": "**Dental Restoration: Filling Procedure**\n\nA restorative procedure to repair tooth structure compromised by carious lesions.\n\n**Clinical Protocol:**\n1. Administration of local anesthetic (e.g., lidocaine 2% with epinephrine)\n2. Carious tissue excavation using high-speed handpiece\n3. Cavity preparation following conservative principles\n4. Etching and bonding (for composite materials)\n5. Layer-by-layer composite placement with light curing\n6. Occlusal adjustment and polishing\n\n**Materials:** Composite resin, glass ionomer, amalgam, or ceramic depending on location and extent.\n\n**Prognosis:** Excellent with proper oral hygiene. Expected lifespan: 5-15 years.\n\n*Disclaimer: Educational content only. Individual treatment plans vary.*"
+      },
+      "child": {
+        "friendly": "**Getting a Tooth Fixed!**\n\nSometimes teeth get tiny holes called cavities. The dentist fixes them by putting in a filling - like filling a hole in the ground!\n\n**What Happens:**\n1. 🦷 The dentist uses a special tool to clean out the cavity\n2. 💧 They wash and dry your tooth\n3. ✨ They put in the filling material (it's like clay!)\n4. 🌟 They make it smooth and shiny\n\n**It takes about as long as watching a cartoon!**\n\n**After:** Your tooth might feel funny for a little while, but it'll be strong again!\n\n*Remember: Brush your teeth to keep them healthy!*"
+      }
+    }
+  },
+  "root-canal": {
+    "name": "Root Canal Treatment",
+    "explanations": {
+      "adult": {
+        "friendly": "**What is a Root Canal?**\n\nA root canal treats infection or damage inside your tooth. Despite its reputation, modern techniques make it no more uncomfortable than getting a filling.\n\n**The Process:**\n1. X-rays identify the problem area\n2. Local anesthesia ensures comfort\n3. Small opening made in the tooth crown\n4. Infected pulp and nerves are removed\n5. Canals are cleaned, shaped, and disinfected\n6. Channels are filled with biocompatible material\n7. Tooth is sealed; crown may be placed later\n\n**Duration:** 1-2 hours (may require multiple visits)\n\n**Recovery:** Mild soreness for a few days, manageable with over-the-counter pain relievers.\n\n*This information is educational. Your dentist will provide specific guidance.*",
+        "technical": "**Endodontic Therapy: Root Canal Treatment**\n\nA procedure to remove infected or necrotic pulp tissue and preserve the tooth structure.\n\n**Clinical Steps:**\n1. Diagnostic radiographs to assess pulp chamber and canal anatomy\n2. Local anesthesia and rubber dam isolation\n3. Access cavity preparation through occlusal surface\n4. Pulpectomy: complete removal of vital or necrotic tissue\n5. Canal instrumentation using rotary NiTi files\n6. Chemomechanical debridement with sodium hypochlorite irrigation\n7. Obturation with gutta-percha and sealer (lateral or warm vertical condensation)\n8. Temporary or permanent restoration placement\n\n**Success Rate:** 85-97% with proper technique.\n\n**Sequelae:** Post-operative sensitivity typically resolves within 72 hours.\n\n*Educational purposes only. Treatment varies by case complexity.*"
+      },
+      "child": {
+        "friendly": "**Fixing the Inside of Your Tooth**\n\nSometimes the inside part of a tooth gets sick. The dentist can make it better!\n\n**What Happens:**\n1. 😴 The dentist makes your tooth sleepy so it doesn't hurt\n2. 🔍 They look inside with special tools\n3. 🧹 They clean out the sick parts\n4. 💊 They put medicine inside\n5. 🔒 They seal it up tight!\n\n**It's like fixing the inside of a toy that's broken!**\n\n**After:** Your tooth might feel a little sore, like after playing hard. Ice cream might help! 🍦\n\n*Your dentist will tell your parents how to take care of it!*"
+      }
+    }
+  },
+  "teeth-cleaning": {
+    "name": "Professional Teeth Cleaning",
+    "explanations": {
+      "adult": {
+        "friendly": "**Professional Teeth Cleaning (Prophylaxis)**\n\nA routine preventive procedure to maintain oral health and prevent dental disease.\n\n**What to Expect:**\n1. Examination of teeth and gums\n2. Plaque and tartar removal using scalers\n3. Deep cleaning between teeth and below gumline\n4. Professional polishing with gritty paste\n5. Flossing demonstration and technique\n6. Optional fluoride treatment\n\n**Duration:** 30-60 minutes\n\n**Benefits:** Prevents cavities, gum disease, bad breath, and staining. Early detection of dental issues.\n\n**Frequency:** Every 6 months recommended, or as advised by your dentist.\n\n*Maintain good oral hygiene between visits for best results.*",
+        "technical": "**Dental Prophylaxis: Professional Oral Hygiene**\n\nPreventive intervention to remove supragingival and subgingival calculus and biofilm.\n\n**Protocol:**\n1. Comprehensive periodontal examination (probing depths, bleeding indices)\n2. Supragingival and subgingival scaling using ultrasonic and hand instruments\n3. Coronal polishing with prophylaxis paste (variable grit)\n4. Interdental cleaning and patient education\n5. Fluoride varnish application (5% sodium fluoride)\n\n**Indications:** Maintenance of periodontal health, prevention of caries and periodontitis.\n\n**Evidence:** Reduces incidence of dental caries and gingivitis when combined with effective home care.\n\n**Interval:** 6-month recall for low-risk patients; 3-4 months for periodontal maintenance.\n\n*Individualized based on patient risk factors.*"
+      },
+      "child": {
+        "friendly": "**Getting Your Teeth Super Clean!**\n\nThe dentist cleans your teeth to make them sparkly and healthy!\n\n**What Happens:**\n1. 🪥 They count your teeth (fun!)\n2. 🌊 They use a special water sprayer to clean\n3. ✨ They polish your teeth to make them shiny\n4. 🧵 They use special string (floss) between teeth\n5. 🦷 Sometimes they paint on yummy fluoride\n\n**It tickles a little bit!**\n\n**You get to pick a flavor for the polish - strawberry, mint, or bubble gum!**\n\n**After:** Your teeth feel super smooth, like glass!\n\n*Keep brushing twice a day to keep them clean!*"
+      }
+    }
+  },
+  "tooth-extraction": {
+    "name": "Tooth Extraction",
+    "explanations": {
+      "adult": {
+        "friendly": "**Tooth Extraction: What to Know**\n\nSometimes a tooth needs to be removed due to severe decay, infection, crowding, or damage.\n\n**The Procedure:**\n1. X-rays to plan the extraction\n2. Local anesthesia to numb the area\n3. For simple extractions: gentle rocking and pulling\n4. For surgical extractions: small incision may be needed\n5. Gauze placed to control bleeding\n\n**Duration:** 20-40 minutes (simple), longer for surgical\n\n**Recovery:**\n- Bite on gauze for 30-45 minutes\n- Rest for 24 hours, avoid strenuous activity\n- Apply ice packs to reduce swelling\n- Soft foods for a few days\n- Don't use straws (can dislodge clot)\n\n**Healing:** 1-2 weeks for socket to close.\n\n*Follow your dentist's aftercare instructions carefully.*",
+        "technical": "**Exodontia: Tooth Extraction Procedure**\n\nSurgical removal of a tooth from its alveolar socket.\n\n**Indications:** Non-restorable caries, advanced periodontitis, orthodontic treatment, impaction, infection.\n\n**Technique:**\n1. Radiographic assessment and treatment planning\n2. Local anesthetic infiltration (articaine, lidocaine)\n3. Simple extraction: Luxation with elevators, extraction with forceps\n4. Surgical extraction: Mucoperiosteal flap, bone removal, tooth sectioning if needed\n5. Socket debridement and irrigation\n6. Primary closure or hemostatic agent placement\n\n**Complications:** Dry socket (alveolar osteitis), infection, nerve damage (rare), sinus communication.\n\n**Post-op Care:** Analgesics, antimicrobials if indicated, ice therapy, soft diet.\n\n**Socket healing:** 6-8 weeks for bone remodeling.\n\n*Patient-specific protocols vary based on medical history.*"
+      },
+      "child": {
+        "friendly": "**When a Tooth Needs to Come Out**\n\nSometimes a tooth is too sick to fix, or it's time for it to make room for grown-up teeth!\n\n**What Happens:**\n1. 😴 The dentist makes your gum sleepy (you won't feel anything!)\n2. 🦷 They wiggle the tooth gently\n3. 👋 Out it comes!\n4. 🩹 They put soft cotton where the tooth was\n\n**It's quicker than you think!**\n\n**After:**\n- Bite on the cotton like a little pillow\n- The Tooth Fairy might visit! 🧚\n- Eat soft foods like ice cream, yogurt, and soup\n- Don't poke the space with your tongue\n\n**In a few days, you'll feel all better!**\n\n*Your parents will help you take care of it!*"
+      }
+    }
+  },
+  "dental-crown": {
+    "name": "Dental Crown",
+    "explanations": {
+      "adult": {
+        "friendly": "**Getting a Dental Crown**\n\nA crown is a tooth-shaped cap that covers a damaged tooth to restore its shape, strength, and appearance.\n\n**The Process (2 visits):**\n\n**Visit 1:**\n1. Tooth is reshaped to make room for crown\n2. Impressions taken for custom crown\n3. Temporary crown placed\n\n**Visit 2 (2-3 weeks later):**\n1. Temporary crown removed\n2. Permanent crown checked for fit and color\n3. Crown cemented permanently\n\n**Duration:** 1-2 hours per visit\n\n**Materials:** Porcelain, ceramic, metal, or combination\n\n**Longevity:** 5-15 years with proper care\n\n**Care:** Brush, floss normally; avoid hard foods initially.\n\n*Your dentist will determine the best crown type for your needs.*",
+        "technical": "**Prosthodontic Crown Restoration**\n\nFull-coverage extra-coronal restoration to restore tooth function and esthetics.\n\n**Indications:** Extensive caries, fracture, post-endodontic reinforcement, esthetic enhancement.\n\n**Clinical Protocol:**\n\n**Appointment 1:**\n1. Tooth preparation (1.5-2mm reduction, chamfer/shoulder margin)\n2. Impression (polyvinyl siloxane or digital scan)\n3. Shade selection\n4. Provisional crown fabrication (bis-acryl composite)\n\n**Laboratory Phase:** Crown fabrication (7-14 days)\n\n**Appointment 2:**\n1. Provisional removal and tooth cleaning\n2. Try-in and occlusal adjustment\n3. Cementation (resin, glass ionomer, or resin-modified GI)\n\n**Materials:** All-ceramic (lithium disilicate, zirconia), PFM, full-cast metal.\n\n**Prognosis:** 90-95% survival at 10 years.\n\n*Treatment planning individualized based on functional and esthetic requirements.*"
+      },
+      "child": {
+        "friendly": "**Getting a Tooth Cap (Crown)**\n\nIf a tooth is really broken, the dentist puts a special cap on it - like a helmet for your tooth!\n\n**What Happens:**\n\n**First Visit:**\n1. 🦷 The dentist shapes your tooth\n2. 📸 They take pictures/molds of it\n3. 👑 You get a temporary cap to wear\n\n**Second Visit (a few weeks later):**\n1. 👋 Off comes the temporary cap\n2. ✨ On goes your shiny new crown!\n3. 🎨 It matches your other teeth!\n\n**Your new crown is super strong!**\n\n**After:** You can eat and play normally! Your crowned tooth is like a superhero tooth now! 🦸‍♂️\n\n*Take good care of it by brushing every day!*"
+      }
+    }
+  },
+  "teeth-whitening": {
+    "name": "Teeth Whitening",
+    "explanations": {
+      "adult": {
+        "friendly": "**Professional Teeth Whitening**\n\nA cosmetic procedure to lighten tooth color and remove stains.\n\n**In-Office Whitening:**\n1. Teeth cleaned and dried\n2. Gums protected with barrier\n3. Whitening gel applied (high-concentration peroxide)\n4. Light or laser may activate gel\n5. Gel left for 15-30 minutes, reapplied 2-3 times\n\n**Duration:** 60-90 minutes\n\n**Results:** 3-8 shades lighter immediately\n\n**Take-Home Kits:**\n- Custom trays fitted\n- Lower-concentration gel used daily for 1-2 weeks\n- Gradual whitening\n\n**Duration:** 30 minutes daily for 7-14 days\n\n**Aftercare:** Avoid staining foods/drinks for 48 hours (coffee, wine, berries).\n\n**Longevity:** 6 months to 2 years with proper maintenance.\n\n*Not suitable for everyone. Consult your dentist first.*",
+        "technical": "**Dental Bleaching: Professional Tooth Whitening**\n\nCosmetic procedure utilizing oxidizing agents to lighten intrinsic and extrinsic tooth discoloration.\n\n**Mechanisms:** Hydrogen peroxide or carbamide peroxide breaks down into free radicals, oxidizing chromophores in enamel and dentin.\n\n**In-Office Protocol:**\n1. Prophylaxis and shade documentation\n2. Soft tissue protection (resin dam or retractor)\n3. 25-40% hydrogen peroxide gel application\n4. Optional light/laser activation (heat accelerates reaction)\n5. Multiple 15-minute cycles\n\n**Home Bleaching:**\n- Custom-fitted thermoplastic trays\n- 10-16% carbamide peroxide gel\n- Daily wear: 2-4 hours or overnight\n- Treatment duration: 10-14 days\n\n**Contraindications:** Pregnancy, sensitive teeth, exposed dentin, extensive restorations.\n\n**Side Effects:** Transient tooth sensitivity, gingival irritation.\n\n**Efficacy:** 2-9 shade guide units improvement.\n\n*Evidence-based approach varies by patient candidacy.*"
+      },
+      "child": {
+        "friendly": "**Making Teeth Whiter and Brighter!**\n\n(Usually for older kids/teens)\n\nTeeth whitening makes your smile extra shiny!\n\n**What Happens:**\n1. 🦷 The dentist cleans your teeth first\n2. 🛡️ They protect your gums\n3. 💎 They paint special gel on your teeth\n4. ✨ Sometimes a blue light shines on them\n5. ⏰ You wait a little while\n6. 🌟 Rinse off - and WOW, brighter teeth!\n\n**Your smile will be super shiny!**\n\n**After:**\n- Drink water or milk instead of soda\n- Brush well every day\n- Your teeth might be a tiny bit sensitive for a day\n\n**Note:** Kids usually have naturally white teeth - whitening is mostly for older teens!\n\n*Ask your dentist if it's right for you!*"
+      }
+    }
+  }
+}
