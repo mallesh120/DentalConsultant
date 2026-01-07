@@ -76,8 +76,18 @@ export async function findPreGeneratedExplanation(procedureName, patientProfile,
  * @returns {string} - The explanation text
  */
 function getExplanationText(procedure, patientProfile, tone) {
-    const profileKey = patientProfile === 'child (5-12 years)' ? 'child' : 'adult';
-    const toneKey = tone === 'technical / medical' ? 'technical' : 'friendly';
+    // Map patient profile to key
+    const profileKey = patientProfile.includes('child') || patientProfile.includes('7-10') ? 'child' : 'adult';
+    
+    // Map tone/style to key
+    let toneKey = 'simple';
+    if (tone.includes('analogies') || tone.includes('using analogies')) {
+        toneKey = 'analogies';
+    } else if (tone.includes('step-by-step') || tone.includes('step')) {
+        toneKey = 'step-by-step';
+    } else if (tone.includes('simple') || tone.includes('direct')) {
+        toneKey = 'simple';
+    }
     
     const explanation = procedure.explanations?.[profileKey]?.[toneKey];
     
@@ -85,9 +95,12 @@ function getExplanationText(procedure, patientProfile, tone) {
         return explanation;
     }
     
-    // Fallback: if specific combination not found, try adult/friendly
-    return procedure.explanations?.adult?.friendly || 
-           procedure.explanations?.child?.friendly ||
+    // Fallback: if specific combination not found, try simple first, then any available
+    return procedure.explanations?.[profileKey]?.simple || 
+           procedure.explanations?.[profileKey]?.analogies ||
+           procedure.explanations?.[profileKey]?.['step-by-step'] ||
+           procedure.explanations?.adult?.simple || 
+           procedure.explanations?.child?.simple ||
            null;
 }
 
