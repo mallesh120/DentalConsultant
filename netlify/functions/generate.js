@@ -63,32 +63,33 @@ exports.handler = async function (event, context) {
   let apiUrl, headers, finalPayload;
   
   if (useHuggingFace) {
-    // Hugging Face Inference API
-    const hfModel = 'mistralai/Mixtral-8x7B-Instruct-v0.1';
-    apiUrl = `https://api-inference.huggingface.co/models/${hfModel}`;
+    // Hugging Face Router API - new endpoint as of 2026
+    // Using meta-llama model for chat completions
+    const hfModel = 'meta-llama/Llama-3.2-3B-Instruct';
+    apiUrl = `https://router.huggingface.co/v1/chat/completions`;
     
     headers = {
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json'
     };
     
-    // Convert Gemini format to Hugging Face format
+    // Convert Gemini format to chat completions format
     const { contents, systemInstruction } = payload;
     const userMessage = contents[0]?.parts[0]?.text || '';
     const systemMessage = systemInstruction?.parts[0]?.text || '';
     
-    const prompt = systemMessage 
-      ? `<s>[INST] ${systemMessage}\n\n${userMessage} [/INST]`
-      : `<s>[INST] ${userMessage} [/INST]`;
+    const messages = [];
+    if (systemMessage) {
+      messages.push({ role: 'system', content: systemMessage });
+    }
+    messages.push({ role: 'user', content: userMessage });
     
     finalPayload = {
-      inputs: prompt,
-      parameters: {
-        max_new_tokens: 1000,
-        temperature: 0.7,
-        top_p: 0.95,
-        return_full_text: false
-      }
+      model: hfModel,
+      messages: messages,
+      max_tokens: 1000,
+      temperature: 0.7,
+      top_p: 0.95
     };
   } else {
     // Google Gemini API (fallback)
@@ -147,13 +148,13 @@ exports.handler = async function (event, context) {
 
     // Convert response to Gemini-compatible format if using Hugging Face
     if (useHuggingFace) {
-      const hfResponse = Array.isArray(data) ? data[0] : data;
-      const generatedText = hfResponse.generated_text || hfResponse.raw || '';
+      // Chat completions format: { choices: [{ message: { content: "..." } }] }
+      const hfMessage = data?.choices?.[0]?.message?.content || '';
       
       const geminiFormat = {
         candidates: [{
           content: {
-            parts: [{ text: generatedText }],
+            parts: [{ text: hfMessage }],
             role: 'model'
           },
           finishReason: 'STOP',
