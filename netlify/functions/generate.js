@@ -64,7 +64,8 @@ exports.handler = async function (event, context) {
   
   if (useHuggingFace) {
     // Hugging Face Router API - new endpoint as of 2026
-    const hfModel = 'mistralai/Mixtral-8x7B-Instruct-v0.1';
+    // Using meta-llama model for chat completions
+    const hfModel = 'meta-llama/Llama-3.2-3B-Instruct';
     apiUrl = `https://router.huggingface.co/v1/chat/completions`;
     
     headers = {

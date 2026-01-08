@@ -47,8 +47,12 @@ export async function findPreGeneratedExplanation(procedureName, patientProfile,
     const data = await loadProceduresData();
     const normalized = normalizeProcedureName(procedureName);
     
+    console.log('Looking for procedure:', procedureName, '-> normalized:', normalized);
+    console.log('Available procedures:', Object.keys(data));
+    
     // Direct match
     if (data[normalized]) {
+        console.log('Found direct match!');
         return getExplanationText(data[normalized], patientProfile, tone);
     }
     
