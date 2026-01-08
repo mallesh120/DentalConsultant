@@ -241,15 +241,15 @@ async function handleGenerateExplanation() {
             // Show and update cost estimate
             const costContainer = document.getElementById('costEstimateContainer');
             if (costContainer && costEstimator) {
-                costand update recovery timeline
+                costEstimator.updateCostDisplay();
+                costContainer.style.display = 'block';
+            }
+            
+            // Show and update recovery timeline
             const timelineContainer = document.getElementById('recoveryTimelineContainer');
             if (timelineContainer && recoveryTimeline) {
                 recoveryTimeline.display(procedure);
                 timelineContainer.style.display = 'block';
-            }
-            
-            // Show Estimator.updateCostDisplay();
-                costContainer.style.display = 'block';
             }
             
             // Show follow-up features if we got a valid response
