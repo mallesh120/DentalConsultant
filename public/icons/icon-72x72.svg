@@ -1,0 +1,14 @@
+<svg width="72" height="72" xmlns="http://www.w3.org/2000/svg">
+  <rect width="72" height="72" fill="#3B82F6"/>
+  <g transform="translate(14.4, 10.799999999999999)">
+    <path d="M 21.599999999999998 7.2 
+             Q 36 3.6 50.4 7.2
+             Q 54 21.599999999999998 50.4 36
+             Q 46.800000000000004 50.4 43.199999999999996 50.4
+             L 28.8 50.4
+             Q 25.2 50.4 21.599999999999998 36
+             Q 18 21.599999999999998 21.599999999999998 7.2 Z" 
+          fill="white"/>
+  </g>
+  <text x="50%" y="85%" text-anchor="middle" fill="white" font-size="8.64" font-family="Arial, sans-serif" font-weight="bold">Dental AI</text>
+</svg>
