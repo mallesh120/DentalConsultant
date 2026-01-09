@@ -3,11 +3,21 @@
 import { PROMPTS, ARIA_LABELS } from './constants.js';
 import * as API from './api.js';
 import * as UI from './ui-helpers.js';
+import { initTheme } from './theme.js';
+import { initCostEstimator } from './cost-estimator.js';
+import { initRecoveryTimeline } from './recovery-timeline.js';
+
+// Initialize theme and features
+let themeManager;
+let costEstimator;
+let recoveryTimeline;
 
 // Application State
 const AppState = {
     currentProcedure: '',
-    currentPatientProfile: ''
+    currentPatientProfile: '',
+    costEstimator: null,
+    recoveryTimeline: null
 };
 
 // DOM Elements Cache
@@ -62,6 +72,17 @@ function init() {
     cacheDOM();
     setupEventListeners();
     setupAccessibility();
+    
+    // Initialize theme manager
+    themeManager = initTheme();
+    
+    // Initialize cost estimator
+    costEstimator = initCostEstimator();
+    AppState.costEstimator = costEstimator;
+    
+    // Initialize recovery timeline
+    recoveryTimeline = initRecoveryTimeline();
+    AppState.recoveryTimeline = recoveryTimeline;
 }
 
 /**
@@ -216,6 +237,20 @@ async function handleGenerateExplanation() {
                 { container: DOM.citationsContainer, linksDiv: DOM.citationLinks },
                 DOM.ariaLiveRegion
             );
+            
+            // Show and update cost estimate
+            const costContainer = document.getElementById('costEstimateContainer');
+            if (costContainer && costEstimator) {
+                costEstimator.updateCostDisplay();
+                costContainer.style.display = 'block';
+            }
+            
+            // Show and update recovery timeline
+            const timelineContainer = document.getElementById('recoveryTimelineContainer');
+            if (timelineContainer && recoveryTimeline) {
+                recoveryTimeline.display(procedure);
+                timelineContainer.style.display = 'block';
+            }
             
             // Show follow-up features if we got a valid response
             if (result.candidates?.[0]?.content?.parts?.[0]?.text) {

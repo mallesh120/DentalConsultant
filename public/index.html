@@ -1,12 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="AI-powered dental procedure explainer for patient education">
+    <meta name="theme-color" content="#06b6d4">
     <title>Dental Patient Education AI</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="manifest" href="/manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0fdfa',
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                            700: '#0e7490'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- DOMPurify for safe HTML rendering of model responses -->
     <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
@@ -51,25 +70,42 @@
         .skip-link:focus {
             top: 0;
         }
+        /* Dark mode transitions */
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
     </style>
 </head>
-<body class="bg-gray-50 flex items-center justify-center min-h-screen py-8">
+<body class="bg-gray-50 dark:bg-gray-900 flex items-center justify-center min-h-screen py-8 transition-colors duration-300">
     <!-- Skip to main content for keyboard navigation -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
     <!-- Screen reader announcements -->
     <div id="aria-live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
     <div class="w-full max-w-4xl mx-auto p-4 md:p-8">
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-200">
+        <!-- Main container with dark mode support -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
             <!-- Header -->
-            <header class="p-6 border-b border-gray-200 text-center">
-                <div class="flex items-center justify-center mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-cyan-500 mr-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h1a1 1 0 011 1v1.5a1.5 1.5 0 01-3 0V7a1 1 0 00-1-1H9a1 1 0 00-1 1v1.5a1.5 1.5 0 01-3 0V6a1 1 0 011-1h1a1 1 0 001-1V3.5zM3.5 10a1.5 1.5 0 010-3H4a1 1 0 001-1V5a1 1 0 011-1h1.5a1.5 1.5 0 010 3H7a1 1 0 00-1 1v1a1 1 0 01-1 1H3.5zm1.5 6.5a1.5 1.5 0 013 0V16a1 1 0 001 1h1a1 1 0 011 1v1.5a1.5 1.5 0 01-3 0V19a1 1 0 00-1-1H9a1 1 0 00-1 1v1.5a1.5 1.5 0 01-3 0V18a1 1 0 011-1h1a1 1 0 001-1v-1.5zM13.5 10a1.5 1.5 0 010-3H14a1 1 0 001-1V5a1 1 0 011-1h1.5a1.5 1.5 0 010 3H17a1 1 0 00-1 1v1a1 1 0 01-1 1h-1.5z" />
-                    </svg>
-                    <h1 class="text-3xl font-bold text-gray-800">Dental AI Explainer</h1>
+            <header class="p-6 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-cyan-500 mr-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h1a1 1 0 011 1v1.5a1.5 1.5 0 01-3 0V7a1 1 0 00-1-1H9a1 1 0 00-1 1v1.5a1.5 1.5 0 01-3 0V6a1 1 0 011-1h1a1 1 0 001-1V3.5zM3.5 10a1.5 1.5 0 010-3H4a1 1 0 001-1V5a1 1 0 011-1h1.5a1.5 1.5 0 010 3H7a1 1 0 00-1 1v1a1 1 0 01-1 1H3.5zm1.5 6.5a1.5 1.5 0 013 0V16a1 1 0 001 1h1a1 1 0 011 1v1.5a1.5 1.5 0 01-3 0V19a1 1 0 00-1-1H9a1 1 0 00-1 1v1.5a1.5 1.5 0 01-3 0V18a1 1 0 011-1h1a1 1 0 001-1v-1.5zM13.5 10a1.5 1.5 0 010-3H14a1 1 0 001-1V5a1 1 0 011-1h1.5a1.5 1.5 0 010 3H17a1 1 0 00-1 1v1a1 1 0 01-1 1h-1.5z" />
+                        </svg>
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-800 dark:text-white">Dental AI Explainer</h1>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Simplify complex dental topics for your patients</p>
+                        </div>
+                    </div>
+                    <button 
+                        id="themeToggle" 
+                        class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        aria-label="Toggle dark mode">
+                        <span class="theme-icon text-gray-800 dark:text-gray-200">
+                            <!-- Icon will be injected by theme.js -->
+                        </span>
+                    </button>
                 </div>
-                <p class="text-gray-500">Simplify complex dental topics for your patients.</p>
             </header>
 
             <!-- Main Form -->
@@ -80,7 +116,7 @@
                     <form onsubmit="event.preventDefault();" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
-                                <label for="procedure" class="block text-sm font-medium text-gray-700 mb-2">
+                                <label for="procedure" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Procedure or Term
                                     <span class="text-red-500" aria-label="required">*</span>
                                 </label>
@@ -90,17 +126,17 @@
                                     name="procedure"
                                     required
                                     maxlength="200"
-                                    class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition" 
-                                    placeholder="e.g., Endodontic Therapy"
+                                    class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition" 
+                                    placeholder="e.g., Root Canal"
                                     aria-describedby="procedure-hint">
                                 <span id="procedure-hint" class="sr-only">Enter the dental procedure or term you want explained</span>
                     </div>
                             <div>
-                                <label for="patientAge" class="block text-sm font-medium text-gray-700 mb-2">Patient Profile</label>
+                                <label for="patientAge" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Patient Profile</label>
                                 <select 
                                     id="patientAge" 
                                     name="patientAge"
-                                    class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition"
+                                    class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition"
                                     aria-describedby="patient-hint">
                             <option value="an adult">Adult</option>
                             <option value="a teenager">Teenager</option>
@@ -109,11 +145,11 @@
                                 <span id="patient-hint" class="sr-only">Select the patient's age group</span>
                             </div>
                             <div>
-                                <label for="tone" class="block text-sm font-medium text-gray-700 mb-2">Explanation Style</label>
+                                <label for="tone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Explanation Style</label>
                                 <select 
                                     id="tone" 
                                     name="tone"
-                                    class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition"
+                                    class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition"
                                     aria-describedby="tone-hint">
                             <option value="simple and direct">Simple & Direct</option>
                             <option value="using analogies">Use Analogies</option>
@@ -122,27 +158,58 @@
                                 <span id="tone-hint" class="sr-only">Choose how the explanation should be presented</span>
                             </div>
                         </div>
+
+                        <!-- Region Selection for Cost Estimator -->
+                        <div class="mt-4">
+                            <label for="regionSelect" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                📍 Your Region (for cost estimates)
+                            </label>
+                            <select 
+                                id="regionSelect" 
+                                name="region"
+                                class="w-full md:w-1/2 px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition"
+                                aria-describedby="region-hint">
+                                <option value="midwest">Midwest US</option>
+                                <option value="northeast">Northeast US</option>
+                                <option value="southeast">Southeast US</option>
+                                <option value="southwest">Southwest US</option>
+                                <option value="west">West Coast</option>
+                            </select>
+                            <span id="region-hint" class="sr-only">Select your geographic region for accurate cost estimates</span>
+                        </div>
                         
                         <div class="mt-8 text-center">
                             <button 
                                 type="submit"
                                 id="generateBtn" 
-                                class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-8 rounded-lg transition-transform transform hover:scale-105 shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-cyan-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                                class="bg-cyan-500 hover:bg-cyan-600 dark:bg-cyan-600 dark:hover:bg-cyan-700 text-white font-bold py-3 px-8 rounded-lg transition-transform transform hover:scale-105 shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-cyan-300 disabled:opacity-50 disabled:cursor-not-allowed">
                                 Generate Explanation
                             </button>
                         </div>
                         
-                        <div id="error-message" class="text-red-500 text-center mt-4 font-medium" role="alert" aria-live="assertive" style="display: none;"></div>
+                        <div id="error-message" class="text-red-500 dark:text-red-400 text-center mt-4 font-medium" role="alert" aria-live="assertive" style="display: none;"></div>
                     </form>
                 </section>
 
+                <!-- Cost Estimate Section (shown after generation) -->
+                <section id="costEstimateContainer" class="p-6 md:p-8 border-t border-gray-200 dark:border-gray-700" style="display: none;" aria-labelledby="cost-heading">
+                    <h2 id="cost-heading" class="text-xl font-bold text-gray-800 dark:text-white mb-4">💰 Cost Information</h2>
+                    <div id="costEstimate"></div>
+                </section>
+
+                <!-- Recovery Timeline Section (shown after generation) -->
+                <section id="recoveryTimelineContainer" class="p-6 md:p-8 border-t border-gray-200 dark:border-gray-700" style="display: none;" aria-labelledby="recovery-heading">
+                    <h2 id="recovery-heading" class="text-xl font-bold text-gray-800 dark:text-white mb-4">🗓️ Recovery Timeline</h2>
+                    <div id="recoveryTimeline"></div>
+                </section>
+
                 <!-- Output Section -->
-                <section id="outputContainer" class="p-6 md:p-8 border-t border-gray-200" style="display: none;" aria-labelledby="output-heading">
+                <section id="outputContainer" class="p-6 md:p-8 border-t border-gray-200 dark:border-gray-700" style="display: none;" aria-labelledby="output-heading">
                     <div class="flex justify-between items-center mb-4">
-                         <h2 id="output-heading" class="text-xl font-bold text-gray-800">Simplified Explanation</h2>
+                         <h2 id="output-heading" class="text-xl font-bold text-gray-800 dark:text-white">Simplified Explanation</h2>
                          <button 
                             id="copyBtn" 
-                            class="flex items-center text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            class="flex items-center text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium py-2 px-4 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-cyan-500"
                             aria-describedby="copy-hint">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -153,11 +220,11 @@
                     </div>
                     
                     <div id="loader" class="flex justify-center items-center h-40" aria-label="Loading explanation" role="status">
-                        <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+                        <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 dark:border-gray-600 h-12 w-12"></div>
                         <span class="sr-only">Loading, please wait...</span>
                     </div>
                     
-                    <div id="output" class="prose max-w-none p-5 bg-gray-50 rounded-lg border border-gray-200 whitespace-pre-wrap" role="region" aria-live="polite" aria-atomic="true"></div>
+                    <div id="output" class="prose dark:prose-invert max-w-none p-5 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600 whitespace-pre-wrap text-gray-900 dark:text-gray-100" role="region" aria-live="polite" aria-atomic="true"></div>
                     <div id="citations" class="mt-6" style="display: none;" aria-labelledby="citations-heading">
                         <h3 id="citations-heading" class="text-md font-semibold text-gray-600 mb-2">Sources:</h3>
                         <div id="citationLinks" class="text-sm text-gray-500" role="list"></div>
@@ -302,5 +369,20 @@
 
     <!-- Load modular JavaScript -->
     <script type="module" src="js/app.js"></script>
+    
+    <!-- Service Worker Registration for PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('ServiceWorker registered:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>
