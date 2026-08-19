@@ -21,6 +21,7 @@ export function ClinicianView({ data }: { data: Partial<NonNullable<DentalRespon
           </CardContent>
         </Card>
 
+
         <Card>
           <CardHeader className="flex flex-row items-center space-x-2">
             <AlertTriangle className="text-destructive h-5 w-5" />
