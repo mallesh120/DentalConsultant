@@ -1,6 +1,7 @@
 import { PersonaEnum, PatientResponseSchema, ClinicianResponseSchema } from '@/lib/schemas';
 import { streamObject } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
+import prisma from '@/lib/prisma';
 
 export async function POST(req: Request) {
   try {
@@ -9,6 +10,24 @@ export async function POST(req: Request) {
 
     // Validate persona
     const parsedPersona = PersonaEnum.parse(persona);
+    
+    const searchProcedure = procedure.toLowerCase().trim();
+
+    // Check Cache
+    const cached = await prisma.procedureCache.findUnique({
+      where: {
+        procedure_persona_language: {
+          procedure: searchProcedure,
+          persona: parsedPersona,
+          language
+        }
+      }
+    });
+
+    if (cached) {
+      console.log(`[DentalAI] Cache hit for ${searchProcedure} (${parsedPersona}, ${language})`);
+      return Response.json(cached.response);
+    }
 
     const systemInstruction = `You are an expert dental AI assistant. The user is in ${parsedPersona.toUpperCase()} MODE. Generate the response entirely in ${language}. ${
       parsedPersona === 'patient' 
@@ -37,6 +56,23 @@ export async function POST(req: Request) {
       prompt: `Please detail the following procedure: ${procedure}. Respond in JSON format exactly matching the schema.`,
       schema: schemaToUse,
       temperature: 0.2, // Low temperature for factual consistency
+      async onFinish({ object }) {
+        if (object) {
+          try {
+            await prisma.procedureCache.create({
+              data: {
+                procedure: searchProcedure,
+                persona: parsedPersona,
+                language,
+                response: object as any
+              }
+            });
+            console.log(`[DentalAI] Cached response for ${searchProcedure}`);
+          } catch (e) {
+            console.error('Failed to cache response:', e);
+          }
+        }
+      }
     });
 
     return result.toTextStreamResponse();
