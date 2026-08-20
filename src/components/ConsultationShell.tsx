@@ -12,6 +12,7 @@ import { usePersona, useLocale } from './Providers';
 import { PatientResponseSchema, ClinicianResponseSchema, type DentalResponse } from '@/lib/schemas';
 import { PatientView } from './PatientView';
 import { ClinicianView } from './ClinicianView';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 export function ConsultationShell() {
   const { persona, setPersona } = usePersona();
@@ -72,8 +73,9 @@ export function ConsultationShell() {
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Dental Consultant AI</h1>
         
         <div className="flex flex-wrap items-center gap-3 sm:gap-4 w-full md:w-auto mt-2 md:mt-0">
+          <ThemeToggle />
           <select 
-            className="text-sm border rounded-md p-1.5 flex-1 sm:flex-none"
+            className="text-sm border rounded-md p-1.5 flex-1 sm:flex-none bg-background"
             value={locale}
             onChange={(e) => setLocale(e.target.value)}
           >
