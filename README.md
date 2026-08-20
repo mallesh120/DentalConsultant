@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dental Consultant AI
+
+Dental Consultant AI is a Next.js application that provides AI-powered dental consultation explanations for both Patients and Clinicians. It is designed to bridge the communication gap by providing easy-to-understand explanations for patients and technical, clinically accurate details for dental professionals.
+
+## Features
+
+- **Role-Based Perspectives (Personas):**
+  - **Patient View:** Provides simplified, comforting explanations of dental procedures, anxiety management tips, aftercare instructions, and expected recovery timelines.
+  - **Clinician View:** Provides technical breakdowns, clinical indications, contraindications, ICD codes, and material recommendations.
+- **Multi-language Support:** Consultations can be generated in English, Spanish, French, and Mandarin.
+- **AI Streaming:** Real-time generation of consultation responses using the Vercel AI SDK.
+- **Feedback System:** Users can rate the AI responses (Thumbs up / Thumbs down) and provide written feedback.
+- **Print & PDF Ready:** Easily print or save the consultation report as a PDF.
+
+## Tech Stack
+
+- **Framework:** [Next.js](https://nextjs.org/) (App Router)
+- **AI Integration:** [Vercel AI SDK](https://sdk.vercel.ai/) (`@ai-sdk/react`, `@ai-sdk/google`, `@ai-sdk/groq`, `@ai-sdk/openai`)
+- **Database / ORM:** [Prisma](https://www.prisma.io/) (for storing feedback and logs)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **UI Components:** [shadcn/ui](https://ui.shadcn.com/) and [Lucide Icons](https://lucide.dev/)
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. **Environment Variables:**
+   Copy the `.env.example` to `.env` and fill in the necessary API keys (e.g., Database URL, AI Provider keys like Groq, Google, or OpenAI).
+   ```bash
+   cp .env.example .env
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. **Database Setup:**
+   Run Prisma to generate the client and push the schema to your database.
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+5. **Open the App:**
+   Open [http://localhost:3000](http://localhost:3000) with your browser to start a consultation.
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/app/`: Next.js App Router pages and API routes (e.g., `/api/consult`, `/api/feedback`).
+- `src/components/`: Reusable React components, including the main `ConsultationShell`, `PatientView`, and `ClinicianView`.
+- `src/lib/`: Schemas (using Zod) and utility functions.
+- `prisma/`: Prisma schema for database modeling.
+- `public/`: Static assets.
