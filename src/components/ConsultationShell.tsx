@@ -6,7 +6,8 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Loader2, User, Stethoscope, Printer } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Loader2, User, Stethoscope, Printer, ThumbsUp, ThumbsDown, Send } from 'lucide-react';
 import { usePersona, useLocale } from './Providers';
 import { PatientResponseSchema, ClinicianResponseSchema, type DentalResponse } from '@/lib/schemas';
 import { PatientView } from './PatientView';
@@ -16,6 +17,11 @@ export function ConsultationShell() {
   const { persona, setPersona } = usePersona();
   const { locale, setLocale } = useLocale();
   const [query, setQuery] = useState('');
+  
+  const [feedbackState, setFeedbackState] = useState<'idle' | 'rating' | 'submitted'>('idle');
+  const [isPositive, setIsPositive] = useState<boolean | null>(null);
+  const [comment, setComment] = useState('');
+  const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
 
   // Use the appropriate schema based on the active persona
   const currentSchema = persona === 'patient' ? PatientResponseSchema : ClinicianResponseSchema;
@@ -31,7 +37,32 @@ export function ConsultationShell() {
 
   const handleConsult = () => {
     if (!query.trim()) return;
+    setFeedbackState('idle');
+    setIsPositive(null);
+    setComment('');
     submit({ procedure: query, persona, language: locale });
+  };
+
+  const submitFeedback = async (positive: boolean, finalComment: string = '') => {
+    setIsSubmittingFeedback(true);
+    try {
+      await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          procedure: query,
+          persona,
+          language: locale,
+          isPositive: positive,
+          comment: finalComment
+        })
+      });
+      setFeedbackState('submitted');
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsSubmittingFeedback(false);
+    }
   };
 
   return (
@@ -106,6 +137,57 @@ export function ConsultationShell() {
               <ClinicianView data={object as any} />
             )}
           </div>
+
+          {/* Feedback UI */}
+          {object && feedbackState !== 'submitted' && (
+            <div className="mt-8 p-6 bg-muted rounded-lg border flex flex-col items-center gap-4 print:hidden">
+              <h3 className="font-semibold text-lg">Was this consultation helpful?</h3>
+              {feedbackState === 'idle' && (
+                <div className="flex gap-4">
+                  <Button variant="outline" size="lg" className="gap-2" onClick={() => { setIsPositive(true); setFeedbackState('rating'); }}>
+                    <ThumbsUp className="w-5 h-5" /> Yes
+                  </Button>
+                  <Button variant="outline" size="lg" className="gap-2" onClick={() => { setIsPositive(false); setFeedbackState('rating'); }}>
+                    <ThumbsDown className="w-5 h-5" /> No
+                  </Button>
+                </div>
+              )}
+              {feedbackState === 'rating' && (
+                <div className="w-full max-w-md flex flex-col gap-3">
+                  <div className="flex items-center gap-2 mb-2 text-sm text-muted-foreground">
+                    {isPositive ? <ThumbsUp className="w-4 h-4 text-green-600" /> : <ThumbsDown className="w-4 h-4 text-red-600" />}
+                    <span>{isPositive ? 'Glad it was helpful!' : 'Sorry to hear that.'} Any additional feedback? (Optional)</span>
+                  </div>
+                  <Textarea 
+                    placeholder="Tell us what you think..." 
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    className="bg-background"
+                  />
+                  <div className="flex justify-end gap-2">
+                    <Button variant="ghost" onClick={() => setFeedbackState('idle')}>Cancel</Button>
+                    <Button onClick={() => submitFeedback(isPositive!, comment)} disabled={isSubmittingFeedback}>
+                      {isSubmittingFeedback ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Send className="w-4 h-4 mr-2" />}
+                      Submit Feedback
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {!isLoading && object && feedbackState === 'submitted' && (
+            <div className="mt-8 p-6 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-lg border border-green-200 dark:border-green-800 text-center print:hidden">
+              Thank you for your feedback!
+            </div>
+          )}
+
+          {/* Medical Disclaimer */}
+          {object && (
+            <div className="mt-8 text-xs text-muted-foreground text-center print:text-left print:mt-4 p-4 border rounded-md bg-slate-50 dark:bg-slate-900/50">
+              <p><strong>Disclaimer:</strong> This application is for informational purposes only and does not constitute medical advice, diagnosis, or treatment. Always seek the advice of your dentist, physician, or other qualified health provider with any questions you may have regarding a medical condition. The doctor's word is final and overrides any information provided by this AI.</p>
+            </div>
+          )}
         </main>
       )}
     </div>

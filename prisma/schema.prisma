@@ -23,3 +23,13 @@ model ProcedureCache {
 
   @@unique([procedure, persona, language])
 }
+
+model Feedback {
+  id         String   @id @default(cuid())
+  procedure  String
+  persona    String
+  language   String
+  isPositive Boolean
+  comment    String?
+  createdAt  DateTime @default(now())
+}
